@@ -10,6 +10,7 @@
     - [3.2.3](#323)
     - [3.2.4](#324)
     - [3.2.5](#325)
+    - [3.2.6](#326)
     - [3.2.7](#327)
   - [Avläsning av ett fåtal knappar](#avläsning-av-ett-fåtal-knappar)
     - [5.2.2](#522)
@@ -37,15 +38,53 @@
 
 ### 3.2.1
 
+`.CSEG`: lets the compiler switch to the code section
+
+`.ORG RESET`: The start of the instruction in EERPOM
+
+These two make sure that the compiler put the program in the correct memory space.
+
+`RJMP init`: Jumps to where the init subroutine is.
+
+`.ORG PM_START`: This address to a program memory
+
 ### 3.2.2
+
+TODO
 
 ### 3.2.3
 
+TODO
+
 ### 3.2.4
+
+```
+0b10000000 --> 0x80
+```
 
 ### 3.2.5
 
+Set bit
+
+```
+SBI PORTC, 0x07 ; Set PORTC
+```
+
+### 3.2.6
+
+Clear bit
+
+```
+CBI PORTC, 0x07
+```
+
 ### 3.2.7
+
+No operation
+
+```
+NOP
+```
 
 ## Avläsning av ett fåtal knappar
 
