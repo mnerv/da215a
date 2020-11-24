@@ -10,17 +10,46 @@
 ; Delay of 1 μs (including RCALL)
 ;==============================================================================
 delay_1_micros:       ; UPPGIFT: komplettera med ett antal NOP-instruktioner!!!
-  RET
+  NOP                 ; 
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  RET                 ; 4 cycles
 
 ;==============================================================================
 ; Delay of X μs
-;	LDI + RCALL = 4 cycles
+; LDI + RCALL = 4 cycles
 ;==============================================================================
 delay_micros:         ; UPPGIFT: komplettera med ett antal NOP-instruktioner!!!
-  DEC R24
-  CPI R24, 0          ; more loops to do?
-  BRNE delay_micros   ; continue!
-  RET
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  ; NOP
+  ; NOP
+  ; NOP
+  ; NOP
+  ; NOP
+  ; NOP
+  ; NOP
+  ; NOP
+  DEC R24             ; 1 cycle
+  CPI R24, 0          ; 1 cycle
+  BRNE delay_micros   ; continue! 1 false, 2 true
+  RET                 ; 4 cycles
 
 ;==============================================================================
 ; Delay of X ms

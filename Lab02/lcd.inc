@@ -19,6 +19,11 @@
  	.EQU RS				= 6				; RS pin, bit 6
 	.EQU D_PORT		= PORTF		; port for data/instructions
 
+.MACRO LCD_WRITE_CHAR
+	LDI R24, @0
+	RCALL lcd_write_chr
+.ENDMACRO
+
 ;==============================================================================
 ; Write the most significant nibble (of the content in R24) to the LCD.
 ;==============================================================================

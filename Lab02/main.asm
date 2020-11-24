@@ -11,6 +11,9 @@
   RJMP init
   .ORG PM_START
 
+  .INCLUDE "delay.inc"
+  .INCLUDE "lcd.inc"
+
 init:
   ; Set stack pointer to point at the end of RAM.
   LDI R16, LOW(RAMEND)
@@ -20,18 +23,18 @@ init:
 
   CALL init_pins
 
+  CALL lcd_init ; Init the LCD
+
   RJMP main
 
 init_pins:
+  ; Set output
   LDI TEMP, 0xF0
   OUT DDRB, TEMP
-  OUT DDRF, TEMP 
+  OUT DDRD, TEMP
+  OUT DDRF, TEMP
 
-  LDI TEMP, 0x00
-  OUT PORTB, TEMP
-  OUT PORTF, TEMP
-
-  OUT PORTE, TEMP
+  ; Set input
   LDI TEMP, 0x00
   OUT DDRE, TEMP
 
@@ -68,14 +71,33 @@ return_key_val:
   MOV RVAL, R18
   RET
 
-main:
-  CALL read_keyboard
-  LSL RVAL
-  LSL RVAL
-  LSL RVAL
-  LSL RVAL
+; main:
+;   CALL read_keyboard
+;   LSL RVAL
+;   LSL RVAL
+;   LSL RVAL
+;   LSL RVAL
 
-  OUT PORTF, RVAL
-  NOP                 ; 1 cycle
-  NOP
-  RJMP main           ; 2 cycles
+;   OUT PORTF, RVAL
+;   NOP                 ; 1 cycle
+;   NOP
+;   RJMP main           ; 2 cycles
+
+main:
+  LCD_WRITE_CHAR 'H'
+  LCD_WRITE_CHAR 'H'
+  LCD_WRITE_CHAR 'E'
+  LCD_WRITE_CHAR 'L'
+  LCD_WRITE_CHAR 'L'
+  LCD_WRITE_CHAR 'O'
+  LCD_WRITE_CHAR ','
+  LCD_WRITE_CHAR ' '
+  LCD_WRITE_CHAR 'W'
+  LCD_WRITE_CHAR 'O'
+  LCD_WRITE_CHAR 'R'
+  LCD_WRITE_CHAR 'L'
+  LCD_WRITE_CHAR 'D'
+  LCD_WRITE_CHAR '!'
+
+loop:
+  RJMP loop
