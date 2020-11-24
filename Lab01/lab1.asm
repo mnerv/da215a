@@ -1,3 +1,14 @@
+;* lab1.asm
+;* ----------------------------------------------
+;*  Read keypad and write it into 4 LEDs t
+;*  display currently pressed number
+;* ----------------------------------------------
+;*
+;* Author: Pratchaya Khansomboon
+;*
+;* Created: 24-11-2020
+;*
+
   .INCLUDE "m32u4def.inc"
 
   .EQU RESET    = 0x0000
@@ -6,10 +17,10 @@
   .DEF TEMP     = R16     ; Temporary value
   .DEF RVAL     = R24     ; Return value
 
-  .CSEG
-  .ORG RESET
+  .CSEG                   ; Specify start of the code
+  .ORG RESET              ; Define the address of the next instruction
   RJMP init
-  .ORG PM_START
+  .ORG PM_START           ; Define the address of the next instruction
 
 init:
   ; Set stack pointer to point at the end of RAM.
@@ -43,7 +54,7 @@ scan_key:
   LSL R19                 ; to the most significant nibble on PORT group B
   LSL R19
   OUT PORTB, R19          ; set column and row
-  NOP                     ; 12 NOP needed to achieve 1 µs of delay for 16 MHz clock
+  NOP                     ; 12 NOP needed to achieve 750 ns of delay for 16 MHz clock
   NOP
   NOP
   NOP
