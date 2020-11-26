@@ -78,11 +78,11 @@ return_key_val:
 
 main:
   CALL read_keyboard
+  ; LDI RVAL, 0x03
   LSL RVAL                ; Shift to the left 4x
   LSL RVAL                ; This is because the LEDs are connected
   LSL RVAL                ; to the most significant nibble on PORT group F
   LSL RVAL
-
   OUT PORTF, RVAL
   NOP                     ; 1 cycle
   NOP
