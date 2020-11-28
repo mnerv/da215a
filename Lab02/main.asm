@@ -4,6 +4,9 @@
   .EQU PM_START = 0x0056
   .EQU NO_KEY   = 0xFF
 
+  .EQU NUM_START = 0x30
+  .EQU ABC_START = 0x41
+
   .DEF TEMP     = R16     ; Temporary value
   .DEF RVAL     = R24     ; Return value
   .DEF PREV     = R30     ; Previous value
@@ -32,7 +35,7 @@ init:
 
   SET_CURSOR 0xC0
   LDI RVAL, 0x00
-  RCALL draw_current
+  RCALL draw
 
   RJMP main
 
@@ -71,8 +74,8 @@ scan_key:
   NOP
   NOP
 
-  NOP
-  NOP
+  NOP                     ; Needed more NOP to wait
+  NOP                     ; NOP doesn't work as intended
   NOP
   NOP
   NOP
@@ -96,18 +99,35 @@ draw_key:
 
   RET
 
-draw_current:
+draw:
   PUSH RVAL
   SET_CURSOR 0xC0
   POP RVAL
 
   PUSH RVAL
-  LDI TEMP, 0x30
+  CPI RVAL, 0x0A
+  BRSH draw_abc
+draw_num:
+  LDI TEMP, NUM_START
   ADD RVAL, TEMP
   RCALL lcd_write_chr
   POP RVAL
-
   RET
+draw_abc:
+  LDI TEMP, ABC_START
+  LDI R18, 0x0A
+  SUB RVAL, R18
+  ADD RVAL, TEMP
+  RCALL lcd_write_chr 
+  POP RVAL
+  RET
+  ; LDI TEMP, 0x30
+
+  ; PUSH RVAL
+  ; ADD RVAL, TEMP
+
+
+  
 
 main:
   RCALL read_keyboard
@@ -120,19 +140,5 @@ same_key:
 check_no_key:
   CPI RVAL, NO_KEY
   BREQ same_key
-  RCALL draw_current
+  RCALL draw
   RJMP main
-
-; main:
-;   RCALL read_keyboard
-;   CP RVAL, PREV
-;   BREQ same_key
-;   RJMP not_same
-; same_key:
-;   MOV PREV, RVAL
-;   RJMP main
-; not_same:
-;   CPI RVAL, NO_KEY
-;   BREQ same_key
-;   RCALL draw_current
-;   RJMP main
