@@ -6,6 +6,9 @@
 
   .EQU NUM_START = 0x30
   .EQU ABC_START = 0x41
+  .EQU NUM_OFFSET = 0x0A
+
+  .EQU CURSOR_ROW2 = 0xC0
 
   .DEF TEMP     = R16     ; Temporary value
   .DEF RVAL     = R24     ; Return value
@@ -75,7 +78,7 @@ scan_key:
   NOP
 
   NOP                     ; Needed more NOP to wait
-  NOP                     ; NOP doesn't work as intended
+  NOP                     ; 12 NOP doesn't work as intended
   NOP
   NOP
   NOP
@@ -101,42 +104,40 @@ draw_key:
 
 draw:
   PUSH RVAL
-  SET_CURSOR 0xC0
+  SET_CURSOR CURSOR_ROW2
   POP RVAL
 
   PUSH RVAL
-  CPI RVAL, 0x0A
+  CPI RVAL, NUM_OFFSET
   BRSH draw_abc
 draw_num:
   LDI TEMP, NUM_START
   ADD RVAL, TEMP
   RCALL lcd_write_chr
+
   POP RVAL
   RET
+
 draw_abc:
   LDI TEMP, ABC_START
-  LDI R18, 0x0A
+  LDI R18, NUM_OFFSET
   SUB RVAL, R18
   ADD RVAL, TEMP
   RCALL lcd_write_chr 
+
   POP RVAL
   RET
-  ; LDI TEMP, 0x30
-
-  ; PUSH RVAL
-  ; ADD RVAL, TEMP
-
-
-  
 
 main:
   RCALL read_keyboard
   CP RVAL, PREV
   BREQ same_key
   RJMP check_no_key
+
 same_key:
   MOV PREV, RVAL
   RJMP main
+
 check_no_key:
   CPI RVAL, NO_KEY
   BREQ same_key
