@@ -1,3 +1,13 @@
+;* main.asm
+;* ----------------------------------------------
+;*  Read keypad and write it the LCD in hex
+;* ----------------------------------------------
+;*
+;* Author: Pratchaya Khansomboon
+;*
+;* Created: 24-11-2020
+;*
+
   .INCLUDE "m32u4def.inc"
 
   .EQU RESET    = 0x0000
@@ -8,11 +18,14 @@
   .EQU ABC_START = 0x41
   .EQU NUM_OFFSET = 0x0A
 
-  .EQU CURSOR_ROW2 = 0xC0
+  .EQU CURSOR_ROW0 = 0x80
+  .EQU CURSOR_ROW1 = 0xC0
 
   .DEF TEMP     = R16     ; Temporary value
+
   .DEF RVAL     = R24     ; Return value
   .DEF PREV     = R30     ; Previous value
+  .DEF KEY_COUNT = R31
 
   .CSEG
   .ORG RESET
@@ -34,7 +47,7 @@ init:
   CALL lcd_init ; Init the LCD
   CALL cursor_off
 
-  CALL draw_key ; Draw key
+  CALL draw_key ; Draw the word "KEY:"
 
   SET_CURSOR 0xC0
   LDI RVAL, 0x00
@@ -64,6 +77,9 @@ scan_key:
   LSL R19                 ; to the most significant nibble on PORT group B
   LSL R19
   OUT PORTB, R19          ; set column and row
+  NOP
+  NOP
+
   NOP                     ; 12 NOP needed to achieve 750 ns of delay for 16 MHz clock
   NOP
   NOP
@@ -80,8 +96,6 @@ scan_key:
   NOP                     ; Needed more NOP to wait
   NOP                     ; 12 NOP doesn't work as intended
   NOP
-  NOP
-  NOP
   SBIC PINE, 6            ; Skip next instruction if PINE.6 is cleared
   RJMP return_key_val     ; Runs when a button is pressed
   INC R18
@@ -93,7 +107,7 @@ return_key_val:
   RET
 
 draw_key:
-  SET_CURSOR 0x80
+  SET_CURSOR CURSOR_ROW0
 
   LCD_WRITE_CHAR 'K'
   LCD_WRITE_CHAR 'E'
@@ -104,7 +118,7 @@ draw_key:
 
 draw:
   PUSH RVAL
-  SET_CURSOR CURSOR_ROW2
+  SET_CURSOR CURSOR_ROW1
   POP RVAL
 
   PUSH RVAL
