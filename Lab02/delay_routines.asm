@@ -69,14 +69,14 @@ main:
   ; /***********************/
   ; /* test microseconds   */ 
   ; /***********************/
-  ; LDI R24, 1
-  ; RCALL delay_micros
+  LDI R24, 1
+  RCALL delay_micros
 
   ; /***********************/
   ; /* test milliseconds   */ 
   ; /***********************/
-  LDI R24, 100
-  RCALL delay_ms
+  ; LDI R24, 1
+  ; RCALL delay_ms
 
   CBI PORTC, 7          ; set pin LOW (2 cycles)
 
@@ -88,13 +88,13 @@ main:
   ; /***********************/
   ; /* test microseconds   */ 
   ; /***********************/
-  ; LDI R24, 250
-  ; RCALL delay_micros
+  LDI R24, 1
+  RCALL delay_micros
 
   ; /***********************/
   ; /* test milliseconds   */ 
   ; /***********************/
-  LDI R24, 100
-  RCALL delay_ms
+  ; LDI R24, 1
+  ; RCALL delay_ms
 
   RJMP main             ; 2 cycles

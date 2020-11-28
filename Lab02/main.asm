@@ -3,8 +3,10 @@
   .EQU RESET    = 0x0000
   .EQU PM_START = 0x0056
   .EQU NO_KEY   = 0xFF
+
   .DEF TEMP     = R16     ; Temporary value
   .DEF RVAL     = R24     ; Return value
+  .DEF PREV     = R30     ; Previous value
 
   .CSEG
   .ORG RESET
@@ -24,6 +26,13 @@ init:
   CALL init_pins
 
   CALL lcd_init ; Init the LCD
+  CALL cursor_off
+
+  CALL draw_key ; Draw key
+
+  SET_CURSOR 0xC0
+  LDI RVAL, 0x00
+  RCALL draw_current
 
   RJMP main
 
@@ -41,15 +50,15 @@ init_pins:
   RET
 
 read_keyboard:
-  LDI R18, 0x00       ; reset counter
+  LDI R18, 0x00           ; reset counter
 scan_key:
   MOV R19, R18
+  LSL R19                 ; Shift 4x to the left
+  LSL R19                 ; This is because the multiplexer are connected
+  LSL R19                 ; to the most significant nibble on PORT group B
   LSL R19
-  LSL R19
-  LSL R19
-  LSL R19
-  OUT PORTB, R19      ; set column and row
-  NOP                 ; a minimum of 2 NOP's is necessary!
+  OUT PORTB, R19          ; set column and row
+  NOP                     ; 12 NOP needed to achieve 750 ns of delay for 16 MHz clock
   NOP
   NOP
   NOP
@@ -61,43 +70,69 @@ scan_key:
   NOP
   NOP
   NOP
-  SBIC PINE, 6
-  RJMP return_key_val
+
+  NOP
+  NOP
+  NOP
+  NOP
+  NOP
+  SBIC PINE, 6            ; Skip next instruction if PINE.6 is cleared
+  RJMP return_key_val     ; Runs when a button is pressed
   INC R18
   CPI R18, 16
   BRNE scan_key
-  LDI R18, NO_KEY     ; no key was pressed!
+  LDI R18, NO_KEY         ; no key was pressed!
 return_key_val:
   MOV RVAL, R18
   RET
 
-; main:
-;   CALL read_keyboard
-;   LSL RVAL
-;   LSL RVAL
-;   LSL RVAL
-;   LSL RVAL
+draw_key:
+  SET_CURSOR 0x80
 
-;   OUT PORTF, RVAL
-;   NOP                 ; 1 cycle
-;   NOP
-;   RJMP main           ; 2 cycles
+  LCD_WRITE_CHAR 'K'
+  LCD_WRITE_CHAR 'E'
+  LCD_WRITE_CHAR 'Y'
+  LCD_WRITE_CHAR ':'
+
+  RET
+
+draw_current:
+  PUSH RVAL
+  SET_CURSOR 0xC0
+  POP RVAL
+
+  PUSH RVAL
+  LDI TEMP, 0x30
+  ADD RVAL, TEMP
+  RCALL lcd_write_chr
+  POP RVAL
+
+  RET
 
 main:
-  LCD_WRITE_CHAR 'H'
-  LCD_WRITE_CHAR 'H'
-  LCD_WRITE_CHAR 'E'
-  LCD_WRITE_CHAR 'L'
-  LCD_WRITE_CHAR 'L'
-  LCD_WRITE_CHAR 'O'
-  LCD_WRITE_CHAR ','
-  LCD_WRITE_CHAR ' '
-  LCD_WRITE_CHAR 'W'
-  LCD_WRITE_CHAR 'O'
-  LCD_WRITE_CHAR 'R'
-  LCD_WRITE_CHAR 'L'
-  LCD_WRITE_CHAR 'D'
-  LCD_WRITE_CHAR '!'
+  RCALL read_keyboard
+  CP RVAL, PREV
+  BREQ same_key
+  RJMP check_no_key
+same_key:
+  MOV PREV, RVAL
+  RJMP main
+check_no_key:
+  CPI RVAL, NO_KEY
+  BREQ same_key
+  RCALL draw_current
+  RJMP main
 
-loop:
-  RJMP loop
+; main:
+;   RCALL read_keyboard
+;   CP RVAL, PREV
+;   BREQ same_key
+;   RJMP not_same
+; same_key:
+;   MOV PREV, RVAL
+;   RJMP main
+; not_same:
+;   CPI RVAL, NO_KEY
+;   BREQ same_key
+;   RCALL draw_current
+;   RJMP main
