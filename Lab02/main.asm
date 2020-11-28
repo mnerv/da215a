@@ -10,16 +10,18 @@
 
   .INCLUDE "m32u4def.inc"
 
-  .EQU RESET    = 0x0000
-  .EQU PM_START = 0x0056
-  .EQU NO_KEY   = 0xFF
+  .EQU RESET      = 0x0000
+  .EQU PM_START   = 0x0056
+  .EQU NO_KEY     = 0xFF
 
-  .EQU NUM_START = 0x30
-  .EQU ABC_START = 0x41
+  .EQU NUM_START  = 0x30
+  .EQU ABC_START  = 0x41
   .EQU NUM_OFFSET = 0x0A
 
   .EQU CURSOR_ROW0 = 0x80
   .EQU CURSOR_ROW1 = 0xC0
+
+  .EQU MAX_CHAR = 0x02
 
   .DEF TEMP     = R16     ; Temporary value
 
@@ -45,13 +47,17 @@ init:
   CALL init_pins
 
   CALL lcd_init ; Init the LCD
-  CALL cursor_off
+  ; CALL cursor_off
 
   CALL draw_key ; Draw the word "KEY:"
 
-  SET_CURSOR 0xC0
+  SET_CURSOR CURSOR_ROW0
   LDI RVAL, 0x00
-  RCALL draw
+  SET_CURSOR CURSOR_ROW1
+  ; RCALL draw
+  ; LDI KEY_COUNT, 0x00 ; reset key count
+  ; INC KEY_COUNT
+
 
   RJMP main
 
@@ -96,6 +102,10 @@ scan_key:
   NOP                     ; Needed more NOP to wait
   NOP                     ; 12 NOP doesn't work as intended
   NOP
+  NOP
+  NOP
+  NOP
+  NOP
   SBIC PINE, 6            ; Skip next instruction if PINE.6 is cleared
   RJMP return_key_val     ; Runs when a button is pressed
   INC R18
@@ -118,10 +128,7 @@ draw_key:
 
 draw:
   PUSH RVAL
-  SET_CURSOR CURSOR_ROW1
-  POP RVAL
 
-  PUSH RVAL
   CPI RVAL, NUM_OFFSET
   BRSH draw_abc
 draw_num:
@@ -142,18 +149,22 @@ draw_abc:
   POP RVAL
   RET
 
+reset_keycount:
+  LDI KEY_COUNT, 0x00
+  PUSH RVAL
+  SET_CURSOR CURSOR_ROW1
+  POP RVAL
 main:
+  MOV PREV, RVAL
   RCALL read_keyboard
   CP RVAL, PREV
-  BREQ same_key
-  RJMP check_no_key
+  BREQ main
 
-same_key:
-  MOV PREV, RVAL
-  RJMP main
-
-check_no_key:
   CPI RVAL, NO_KEY
-  BREQ same_key
+  BREQ main
+
   RCALL draw
+  INC KEY_COUNT
+  CPI KEY_COUNT, MAX_CHAR
+  BRSH reset_keycount
   RJMP main
