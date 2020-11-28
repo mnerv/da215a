@@ -27,6 +27,7 @@ delay_1_micros:       ; UPPGIFT: komplettera med ett antal NOP-instruktioner!!!
 ;==============================================================================
 ; Delay of X μs
 ; LDI + RCALL = 4 cycles
+; R24 can't be more than 0xFF
 ;==============================================================================
 delay_micros:         ; UPPGIFT: komplettera med ett antal NOP-instruktioner!!!
   NOP

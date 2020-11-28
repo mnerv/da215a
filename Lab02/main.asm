@@ -25,8 +25,8 @@
 
   .DEF TEMP     = R16     ; Temporary value
 
-  .DEF RVAL     = R24     ; Return value
-  .DEF PREV     = R30     ; Previous value
+  .DEF RVAL      = R24     ; Return value
+  .DEF PREV_KEY  = R30     ; Previous value
   .DEF KEY_COUNT = R31
 
   .CSEG
@@ -52,8 +52,8 @@ init:
   CALL draw_key ; Draw the word "KEY:"
 
   SET_CURSOR CURSOR_ROW0
-  LDI RVAL, 0x00
   SET_CURSOR CURSOR_ROW1
+  LDI RVAL, 0x00
   ; RCALL draw
   ; LDI KEY_COUNT, 0x00 ; reset key count
   ; INC KEY_COUNT
@@ -155,9 +155,9 @@ reset_keycount:
   SET_CURSOR CURSOR_ROW1
   POP RVAL
 main:
-  MOV PREV, RVAL
+  MOV PREV_KEY, RVAL
   RCALL read_keyboard
-  CP RVAL, PREV
+  CP RVAL, PREV_KEY
   BREQ main
 
   CPI RVAL, NO_KEY
