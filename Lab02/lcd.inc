@@ -91,7 +91,7 @@ lcd_clear:
   RCALL lcd_write_instr
   RET
 
-cursor_on:
+cursor_no_blink:
   LDI R24, 0x0E
   RCALL lcd_write_instr
   RET

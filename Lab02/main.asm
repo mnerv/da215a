@@ -47,17 +47,13 @@ init:
   CALL init_pins
 
   CALL lcd_init ; Init the LCD
-  ; CALL cursor_off
+  CALL cursor_no_blink
 
   CALL draw_key ; Draw the word "KEY:"
 
   SET_CURSOR CURSOR_ROW0
   SET_CURSOR CURSOR_ROW1
   LDI RVAL, 0x00
-  ; RCALL draw
-  ; LDI KEY_COUNT, 0x00 ; reset key count
-  ; INC KEY_COUNT
-
 
   RJMP main
 
