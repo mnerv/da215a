@@ -14,16 +14,16 @@
   .EQU PM_START   = 0x0056
   .EQU NO_KEY     = 0xFF
 
-  .EQU NUM_START  = 0x30
-  .EQU ABC_START  = 0x41
-  .EQU NUM_OFFSET = 0x0A
+  .EQU ASCII_NUM_START  = 0x30
+  .EQU ASCII_A_START    = 0x41
+  .EQU HEX_A_START      = 0x0A
 
   .EQU CURSOR_ROW0 = 0x80
   .EQU CURSOR_ROW1 = 0xC0
 
-  .EQU MAX_CHAR = 0x02
+  .EQU MAX_CHAR  = 0x02
 
-  .DEF TEMP     = R16     ; Temporary value
+  .DEF TEMP      = R16     ; Temporary value
 
   .DEF RVAL      = R24     ; Return value
   .DEF PREV_KEY  = R30     ; Previous value
@@ -49,7 +49,7 @@ init:
   CALL lcd_init ; Init the LCD
   CALL cursor_no_blink
 
-  CALL draw_key ; Draw the word "KEY:"
+  CALL draw_text ; Draw the word "KEY:"
 
   SET_CURSOR CURSOR_ROW0
   SET_CURSOR CURSOR_ROW1
@@ -112,7 +112,7 @@ return_key_val:
   MOV RVAL, R18
   RET
 
-draw_key:
+draw_text:
   SET_CURSOR CURSOR_ROW0
 
   LCD_WRITE_CHAR 'K'
@@ -125,10 +125,10 @@ draw_key:
 draw:
   PUSH RVAL
 
-  CPI RVAL, NUM_OFFSET
+  CPI RVAL, HEX_A_START
   BRSH draw_abc
 draw_num:
-  LDI TEMP, NUM_START
+  LDI TEMP, ASCII_NUM_START
   ADD RVAL, TEMP
   RCALL lcd_write_chr
 
@@ -136,8 +136,8 @@ draw_num:
   RET
 
 draw_abc:
-  LDI TEMP, ABC_START
-  LDI R18, NUM_OFFSET
+  LDI TEMP, ASCII_A_START
+  LDI R18, HEX_A_START
   SUB RVAL, R18
   ADD RVAL, TEMP
   RCALL lcd_write_chr 
