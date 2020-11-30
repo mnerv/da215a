@@ -86,21 +86,33 @@ lcd_write_chr:
   RCALL delay_micros
   RET
 
+;==============================================================================
+; Clear the LCD display
+;==============================================================================
 lcd_clear:
   LDI R24, 0x01
   RCALL lcd_write_instr
   RET
 
+;==============================================================================
+; Set cursor on but not blinking and display on
+;==============================================================================
 cursor_no_blink:
   LDI R24, 0x0E
   RCALL lcd_write_instr
   RET
 
+;==============================================================================
+; Set cursor off and display on
+;==============================================================================
 cursor_off:
   LDI R24, 0x0C 
   RCALL lcd_write_instr
   RET
 
+;==============================================================================
+; Set cursor to blinking and display on
+;==============================================================================
 cursor_blinking:
   LDI R24, 0x0F             ; Display on, Cursor On, Blinking Cursor
   RCALL lcd_write_instr

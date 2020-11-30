@@ -1,7 +1,7 @@
 ;* main.asm
-;* ----------------------------------------------
+; ---------------------------------------------------------------------
 ;*  Read keypad and write it the LCD in hex
-;* ----------------------------------------------
+; ---------------------------------------------------------------------
 ;*
 ;* Author: Pratchaya Khansomboon
 ;*
@@ -10,6 +10,9 @@
 
   .INCLUDE "m32u4def.inc"
 
+; ---------------------------------------------------------------------
+; Definitions of registers, etc. ("constants")
+; ---------------------------------------------------------------------
   .EQU RESET      = 0x0000
   .EQU PM_START   = 0x0056
   .EQU NO_KEY     = 0xFF
@@ -29,6 +32,9 @@
   .DEF PREV_KEY  = R30     ; Previous value
   .DEF KEY_COUNT = R31
 
+; ---------------------------------------------------------------------
+; Start of program
+; ---------------------------------------------------------------------
   .CSEG
   .ORG RESET
   RJMP init
@@ -37,6 +43,9 @@
   .INCLUDE "delay.inc"
   .INCLUDE "lcd.inc"
 
+; ---------------------------------------------------------------------
+; Initializations of stack pointer, I/O pins
+; ---------------------------------------------------------------------
 init:
   ; Set stack pointer to point at the end of RAM.
   LDI R16, LOW(RAMEND)
@@ -53,10 +62,15 @@ init:
 
   SET_CURSOR CURSOR_ROW0
   SET_CURSOR CURSOR_ROW1
+
+  LDI PREV_KEY, 0x00
   LDI RVAL, 0x00
 
   RJMP main
 
+; ---------------------------------------------------------------------
+; Initializations I/O pins
+; ---------------------------------------------------------------------
 init_pins:
   ; Set output
   LDI TEMP, 0xF0
@@ -70,6 +84,9 @@ init_pins:
 
   RET
 
+; ---------------------------------------------------------------------
+; Read keyboard subroutine
+; ---------------------------------------------------------------------
 read_keyboard:
   LDI R18, 0x00           ; reset counter
 scan_key:
@@ -112,6 +129,9 @@ return_key_val:
   MOV RVAL, R18
   RET
 
+; ---------------------------------------------------------------------
+; Draw the text: "KEY:" on the LCD display on ROW0, COLUMN0
+; ---------------------------------------------------------------------
 draw_text:
   SET_CURSOR CURSOR_ROW0
 
@@ -122,6 +142,9 @@ draw_text:
 
   RET
 
+; ---------------------------------------------------------------------
+; Draw the currently pressed key on the LCD
+; ---------------------------------------------------------------------
 draw:
   PUSH RVAL
 
