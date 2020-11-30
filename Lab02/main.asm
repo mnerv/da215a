@@ -128,8 +128,7 @@ draw:
   CPI RVAL, HEX_A_START
   BRSH draw_abc
 draw_num:
-  LDI TEMP, ASCII_NUM_START
-  ADD RVAL, TEMP
+  SUBI RVAL, -ASCII_NUM_START
   RCALL lcd_write_chr
 
   POP RVAL
@@ -137,9 +136,8 @@ draw_num:
 
 draw_abc:
   LDI TEMP, ASCII_A_START
-  LDI R18, HEX_A_START
-  SUB RVAL, R18
-  ADD RVAL, TEMP
+  SUBI RVAL, HEX_A_START
+  SUBI RVAL, -ASCII_A_START
   RCALL lcd_write_chr 
 
   POP RVAL
