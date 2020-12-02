@@ -28,4 +28,14 @@ TRACE07
 
 delay_micros
 
+TRACE08
+TRACE09
+4 NOP
 
+TRACE10
+4 NOP
+delay_ms 1
+
+TRACE11
+4 NOP
+delay_ms 2

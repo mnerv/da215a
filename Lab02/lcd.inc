@@ -92,6 +92,8 @@ lcd_write_chr:
 lcd_clear:
   LDI R24, 0x01
   RCALL lcd_write_instr
+  LDI R24, 2
+  RCALL delay_ms
   RET
 
 ;==============================================================================
@@ -100,6 +102,8 @@ lcd_clear:
 cursor_no_blink:
   LDI R24, 0x0E
   RCALL lcd_write_instr
+  LDI R24, 2
+  RCALL delay_ms
   RET
 
 ;==============================================================================
@@ -108,6 +112,8 @@ cursor_no_blink:
 cursor_off:
   LDI R24, 0x0C 
   RCALL lcd_write_instr
+  LDI R24, 2
+  RCALL delay_ms
   RET
 
 ;==============================================================================
@@ -116,6 +122,8 @@ cursor_off:
 cursor_blinking:
   LDI R24, 0x0F             ; Display on, Cursor On, Blinking Cursor
   RCALL lcd_write_instr
+  LDI R24, 2
+  RCALL delay_ms
   RET
 
 ;==============================================================================

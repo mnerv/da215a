@@ -24,13 +24,10 @@
   .EQU CURSOR_ROW0 = 0x80
   .EQU CURSOR_ROW1 = 0xC0
 
-  .EQU MAX_CHAR  = 0x02
-
   .DEF TEMP      = R16     ; Temporary value
 
   .DEF RVAL      = R24     ; Return value
   .DEF PREV_KEY  = R30     ; Previous value
-  .DEF KEY_COUNT = R31
 
 ; ---------------------------------------------------------------------
 ; Start of program
@@ -56,9 +53,10 @@ init:
   CALL init_pins
 
   CALL lcd_init ; Init the LCD
-  CALL cursor_no_blink
+  RCALL cursor_no_blink  
+  RCALL lcd_clear
 
-  CALL draw_text ; Draw the word "KEY:"
+  RCALL draw_text ; Draw the word "KEY:"
 
   SET_CURSOR CURSOR_ROW0
   SET_CURSOR CURSOR_ROW1
@@ -116,9 +114,10 @@ scan_key:
   NOP                     ; 12 NOP doesn't work as intended
   NOP
   NOP
-  NOP
-  NOP
-  NOP
+  PUSH R24
+  LDI R24, 250
+  RCALL delay_micros
+  POP R24
   SBIC PINE, 6            ; Skip next instruction if PINE.6 is cleared
   RJMP return_key_val     ; Runs when a button is pressed
   INC R18
@@ -144,6 +143,9 @@ draw_text:
 
 ; ---------------------------------------------------------------------
 ; Draw the currently pressed key on the LCD
+; Paramter:
+;          R24: Key value
+;          0 < R24 < 16
 ; ---------------------------------------------------------------------
 draw:
   PUSH RVAL
@@ -166,14 +168,15 @@ draw_abc:
   POP RVAL
   RET
 
-reset_keycount:
-  LDI KEY_COUNT, 0x00
-  PUSH RVAL
-  SET_CURSOR CURSOR_ROW1
-  POP RVAL
+; ---------------------------------------------------------------------
+; Main loop
+; Read key and print pressed key
+; ---------------------------------------------------------------------
 main:
   MOV PREV_KEY, RVAL
   RCALL read_keyboard
+  NOP
+  NOP
   CP RVAL, PREV_KEY
   BREQ main
 
@@ -181,7 +184,4 @@ main:
   BREQ main
 
   RCALL draw
-  INC KEY_COUNT
-  CPI KEY_COUNT, MAX_CHAR
-  BRSH reset_keycount
   RJMP main

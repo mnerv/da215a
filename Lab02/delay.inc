@@ -42,14 +42,6 @@ delay_micros:         ; UPPGIFT: komplettera med ett antal NOP-instruktioner!!!
   NOP
   NOP
   NOP
-  ; NOP
-  ; NOP
-  ; NOP
-  ; NOP
-  ; NOP
-  ; NOP
-  ; NOP
-  ; NOP
   DEC R24             ; 1 cycle
   CPI R24, 0          ; 1 cycle
   BRNE delay_micros   ; continue! 1 false, 2 true
