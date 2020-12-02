@@ -11,36 +11,19 @@
 ;*
 
 ; * ---------------------------------------------------------------------------
-; *  Avaiable MACROS
-; * -------------------------------
-; *  LCD_WRITE_CHAR
-; *  SET_CURSOR
-; *
-; * ===============================
-; *  Avaiable SUBROUTNES
-; * -------------------------------
-; *  lcd_write_nibble 
-; *  lcd_write_instr 
-; *  lcd_write_chr
-; *  lcd_clear
-; *  cursor_no_blink
-; *  cursor_off
-; *  cursor_blinking
-; *  lcd_init
+; Defines of ports and pins used by the LCD
 ; * ---------------------------------------------------------------------------
 
-;==============================================================================
-; Defines of ports and pins used by the LCD
-;==============================================================================
   .EQU E_PORT  = PORTD      ; port for Enable pin
   .EQU E       = 7          ; Enable pin, bit 7
   .EQU RS_PORT = PORTD      ; port for RS pin
   .EQU RS      = 6          ; RS pin, bit 6
   .EQU D_PORT  = PORTF      ; port for data/instructions
+  
+  .EQU NULL_CHAR = 0x00;
 
 str_1:  
-  .DB "Welcome!"
-  .EQU sz_str1 = 8          ; Size of ”str_1”
+  .DB "Welcome!",0
 
 ; * ---------------------------------------------------------------------------
 ; MACRO definitions
@@ -92,8 +75,8 @@ lcd_write_instr:
 
 ; * ---------------------------------------------------------------------------
 ; Write a character to the Data Register.
-; Character is stored in R24.
-; After the character has been written, a delay of 43 μs is generated! 
+; Parameter: IN
+;            R24 Character
 ; * ---------------------------------------------------------------------------
 lcd_write_chr:
   SBI RS_PORT, RS           ; select Data Register
@@ -104,9 +87,12 @@ lcd_write_chr:
   RCALL delay_micros
   RET
 
-;==============================================================================
+; * ---------------------------------------------------------------------------
 ; Clear the LCD display
-;==============================================================================
+; Register used:
+;                R24
+; * ---------------------------------------------------------------------------
+
 lcd_clear:
   LDI R24, 0x01
   RCALL lcd_write_instr
@@ -114,9 +100,12 @@ lcd_clear:
   RCALL delay_ms
   RET
 
-;==============================================================================
+; * ---------------------------------------------------------------------------
 ; Set cursor on but not blinking and display on
-;==============================================================================
+; Register used:
+;                R24
+; * ---------------------------------------------------------------------------
+
 cursor_no_blink:
   LDI R24, 0x0E
   RCALL lcd_write_instr
@@ -124,9 +113,12 @@ cursor_no_blink:
   RCALL delay_ms
   RET
 
-;==============================================================================
+; * ---------------------------------------------------------------------------
 ; Set cursor off and display on
-;==============================================================================
+; Register used:
+;                R24
+; * ---------------------------------------------------------------------------
+
 cursor_off:
   LDI R24, 0x0C 
   RCALL lcd_write_instr
@@ -134,9 +126,12 @@ cursor_off:
   RCALL delay_ms
   RET
 
-;==============================================================================
+; * ---------------------------------------------------------------------------
 ; Set cursor to blinking and display on
-;==============================================================================
+; Register used:
+;                R24
+; * ---------------------------------------------------------------------------
+
 cursor_blinking:
   LDI R24, 0x0F             ; Display on, Cursor On, Blinking Cursor
   RCALL lcd_write_instr
@@ -145,22 +140,44 @@ cursor_blinking:
   RET
 
 ; * ---------------------------------------------------------------------------
+; Write Welcome! string subroutine
+;
+; Register used:
+;                R24
+;                R30, R31 for pair Z register
 ; * ---------------------------------------------------------------------------
-write_welcome:
-  LDI ZH, HIGH(str_1<<1)
-  LDI ZL, LOW(str_1<<1)
-  CLR R16
-nxt1:
-  LPM R24, Z+
-  RCALL lcd_write_chr
-  INC  R16
-  CPI  R16, sz_str1
-  BRLT nxt1
-  RET
+; write_welcome:
+;   LDI ZH, HIGH(str_1<<1)
+;   LDI ZL, LOW(str_1<<1)
+; nxt1:
+;   LPM R24, Z+
+;   CPI R24, NULL_CHAR
+;   BRNE output_char
+;   RET
+; output_char:
+;   RCALL lcd_write_chr
+;   RJMP nxt1
 
-;==============================================================================
+.MACRO PRINT_STRING
+  LDI ZH, HIGH(@0 << 1)
+  LDI ZL, LOW(@0 << 1)
+  RCALL write_string
+.ENDMACRO
+
+write_string:
+  LPM R24, Z+
+  CPI R24, NULL_CHAR
+  BRNE output_char
+  RET
+output_char:
+  RCALL lcd_write_chr
+  RJMP write_string
+
+; * ---------------------------------------------------------------------------
 ; Initialize the LCD.
-;==============================================================================
+; Register used:
+;                R24
+; * ---------------------------------------------------------------------------
 lcd_init:
   LDI R24, 20               ; wait more than 15 ms after power-up!
   RCALL delay_ms

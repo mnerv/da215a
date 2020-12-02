@@ -41,6 +41,9 @@
   .INCLUDE "lcd.inc"
   .INCLUDE "keyboard.inc"
 
+hello_str:
+  .DB "Hello!",0
+
 ; ---------------------------------------------------------------------
 ; Initializations of stack pointer, I/O pins
 ; ---------------------------------------------------------------------
@@ -59,9 +62,10 @@ init:
 
 
   ; RCALL draw_text ; Draw the word "KEY:"
-  RCALL write_welcome
+  ; RCALL write_welcome
+  PRINT_STRING hello_str
 
-  ; SET_CURSOR CURSOR_ROWh
+  ; SET_CURSOR CURSOR_ROW0
   SET_CURSOR CURSOR_ROW1
 
   LDI PREV_KEY, 0x00
