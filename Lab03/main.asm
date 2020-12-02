@@ -40,6 +40,7 @@
   .INCLUDE "delay.inc"
   .INCLUDE "lcd.inc"
   .INCLUDE "keyboard.inc"
+  .INCLUDE "dice.inc"
 
 hello_str:
   .DB "Hello!",0
@@ -57,19 +58,13 @@ init:
   CALL init_pins
 
   CALL lcd_init ; Init the LCD
-  RCALL cursor_no_blink  
+  RCALL cursor_off
   RCALL lcd_clear
-
-
-  ; RCALL draw_text ; Draw the word "KEY:"
-  ; RCALL write_welcome
-  PRINT_STRING hello_str
-
-  ; SET_CURSOR CURSOR_ROW0
-  SET_CURSOR CURSOR_ROW1
 
   LDI PREV_KEY, 0x00
   LDI RVAL, 0x00
+
+  RCALL init_dice
 
   RJMP main
 
@@ -90,23 +85,10 @@ init_pins:
   RET
 
 ; ---------------------------------------------------------------------
-; Draw the text: "KEY:" on the LCD display on ROW0, COLUMN0
-; ---------------------------------------------------------------------
-draw_text:
-  SET_CURSOR CURSOR_ROW0
-
-  LCD_WRITE_CHAR 'K'
-  LCD_WRITE_CHAR 'E'
-  LCD_WRITE_CHAR 'Y'
-  LCD_WRITE_CHAR ':'
-
-  RET
-
-; ---------------------------------------------------------------------
 ; Draw the currently pressed key on the LCD
 ; Paramter:
 ;          R24: Key value
-;          0 < R24 < 16
+;          R24 > 0
 ; ---------------------------------------------------------------------
 draw:
   PUSH RVAL
@@ -116,18 +98,20 @@ draw:
 
 ; ---------------------------------------------------------------------
 ; Main loop
-; Read key and print pressed key
 ; ---------------------------------------------------------------------
 main:
-  MOV PREV_KEY, RVAL
-  RCALL read_keyboard
-  NOP
-  NOP
-  CP RVAL, PREV_KEY
-  BREQ main
+  RCALL roll_dice
 
-  CPI RVAL, NO_KEY
-  BREQ main
-
-  RCALL draw
   RJMP main
+  ; MOV PREV_KEY, RVAL
+  ; RCALL read_keyboard
+  ; NOP
+  ; NOP
+  ; CP RVAL, PREV_KEY
+  ; BREQ main
+
+  ; CPI RVAL, NO_KEY
+  ; BREQ main
+
+  ; RCALL draw
+  ; RJMP main

@@ -66,3 +66,23 @@ loop_dms:
   CPI R18, 0          ; more loops to do?
   BRNE loop_dms       ; continue!
   RET
+
+delay_s: 
+  MOV R18, R24
+loop_s:
+  PUSH R18
+
+  LDI R24, 250
+  RCALL delay_ms
+  LDI R24, 250
+  RCALL delay_ms
+  LDI R24, 250
+  RCALL delay_ms
+  LDI R24, 250
+  RCALL delay_ms
+
+  POP R18
+  DEC R18
+  CPI R18, 0        ; more loops to do?
+  BRNE loop_s       ; continue!
+  RET

@@ -7,7 +7,7 @@
 ;  monitorstr: .DB "Monitor",0
 ; // moni_start_str: .DB ">0000: ",0
 
- init_monitor:
+init_monitor:
 	RET
 
 ; read keys from keyboard. If * - exit, if # advance address. if number - use as XH.

@@ -146,19 +146,12 @@ cursor_blinking:
 ;                R24
 ;                R30, R31 for pair Z register
 ; * ---------------------------------------------------------------------------
-; write_welcome:
-;   LDI ZH, HIGH(str_1<<1)
-;   LDI ZL, LOW(str_1<<1)
-; nxt1:
-;   LPM R24, Z+
-;   CPI R24, NULL_CHAR
-;   BRNE output_char
-;   RET
-; output_char:
-;   RCALL lcd_write_chr
-;   RJMP nxt1
+write_welcome:
+  LDI ZH, HIGH(str_1 << 1)
+  LDI ZL, LOW(str_1 << 1)
+  RCALL write_string
 
-.MACRO PRINT_STRING
+.MACRO PRINTSTRING
   LDI ZH, HIGH(@0 << 1)
   LDI ZL, LOW(@0 << 1)
   RCALL write_string
