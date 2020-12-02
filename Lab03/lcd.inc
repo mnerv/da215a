@@ -144,11 +144,13 @@ cursor_blinking:
   RCALL delay_ms
   RET
 
+; * ---------------------------------------------------------------------------
+; * ---------------------------------------------------------------------------
 write_welcome:
   LDI ZH, HIGH(str_1<<1)
-nxt1:
   LDI ZL, LOW(str_1<<1)
   CLR R16
+nxt1:
   LPM R24, Z+
   RCALL lcd_write_chr
   INC  R16

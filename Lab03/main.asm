@@ -59,7 +59,7 @@ init:
 
 
   ; RCALL draw_text ; Draw the word "KEY:"
-  ; RCALL write_welcome
+  RCALL write_welcome
 
   ; SET_CURSOR CURSOR_ROWh
   SET_CURSOR CURSOR_ROW1
