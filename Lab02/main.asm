@@ -152,13 +152,18 @@ draw:
 
   CPI RVAL, HEX_A_START
   BRSH draw_abc
+; ---------------------------------------------------------------------
+; Convert key to number ascii before output
+; ---------------------------------------------------------------------
 draw_num:
   SUBI RVAL, -ASCII_NUM_START
   RCALL lcd_write_chr
 
   POP RVAL
   RET
-
+; ---------------------------------------------------------------------
+; Convert key to letters before output
+; ---------------------------------------------------------------------
 draw_abc:
   LDI TEMP, ASCII_A_START
   SUBI RVAL, HEX_A_START
