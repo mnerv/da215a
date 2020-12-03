@@ -27,7 +27,7 @@
   .DEF TEMP      = R16     ; Temporary value
 
   .DEF RVAL      = R24     ; Return value
-  .DEF PREV_KEY  = R30     ; Previous value
+  .DEF PREV_KEY  = R25     ; Previous value
 
 ; ---------------------------------------------------------------------
 ; Start of program
