@@ -93,7 +93,7 @@ lcd_write_chr:
 ;                R24
 ; * ---------------------------------------------------------------------------
 
-lcd_clear:
+lcd_clear_display:
   LDI R24, 0x01
   RCALL lcd_write_instr
   LDI R24, 2

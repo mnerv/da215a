@@ -4,7 +4,8 @@
 ;  *  Created: 2016-11-19 12:42:26
 ;  *   Author: Magnus Krampell
 ;  */ 
-;  monitorstr: .DB "Monitor",0
+monitorstr: 
+	.DB "Monitor",0
 ; // moni_start_str: .DB ">0000: ",0
 
 init_monitor:

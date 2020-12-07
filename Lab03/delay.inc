@@ -67,6 +67,18 @@ loop_dms:
   BRNE loop_dms       ; continue!
   RET
 
+delay_1_s:
+  LDI R24, 250
+  RCALL delay_ms
+  LDI R24, 250
+  RCALL delay_ms
+  LDI R24, 250
+  RCALL delay_ms
+  LDI R24, 250
+  RCALL delay_ms
+
+  RET
+
 delay_s: 
   MOV R18, R24
 loop_s:

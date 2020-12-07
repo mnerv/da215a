@@ -3,12 +3,16 @@
 ; Read keyboard subroutine and map it to the keypad
 ; 
 ; Author: Pratchaya Khansomboon
+;
+; Created: 01-12-2020
 ;----------------------------------------------------------------
 
 ;----------------------------------------------------------------
 ; Definitions of registers, etc. ("constants")
 ;----------------------------------------------------------------
+  .DEF PREV_KEY  = R25          ; Previous value
   .EQU NO_KEY     = 0xFF
+
 map_table: 
   .DB "147*2580369#"            ; 12 charactes
 
@@ -41,10 +45,10 @@ scan_key:
 return_key_val:
   MOV RVAL, R18
   CPI RVAL, NO_KEY
-  BRNE map_key 
+  BRNE to_ASCII 
   RET
 
-map_key:
+to_ASCII:
   LDI ZH, HIGH(map_table << 1)  ; Initialize Z pointer
   LDI ZL, LOW(map_table << 1)
   ADD ZL, RVAL                  ; Add index

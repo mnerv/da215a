@@ -1,12 +1,13 @@
-;* main.asm
 ; ---------------------------------------------------------------------
-;*  Read keypad and write it the LCD in hex
+; main.asm
+;
+; Read keypad and write it the LCD in hex
+;
+; Author: Pratchaya Khansomboon
+;
+; Created: 24-11-2020
+;
 ; ---------------------------------------------------------------------
-;*
-;* Author: Pratchaya Khansomboon
-;*
-;* Created: 24-11-2020
-;*
 
   .INCLUDE "m32u4def.inc"
 
@@ -15,19 +16,12 @@
 ; ---------------------------------------------------------------------
   .EQU RESET      = 0x0000
   .EQU PM_START   = 0x0056
-  ; .EQU NO_KEY     = 0xFF
-
-  .EQU ASCII_NUM_START  = 0x30
-  .EQU ASCII_A_START    = 0x41
-  .EQU HEX_A_START      = 0x0A
 
   .EQU CURSOR_ROW0 = 0x80
   .EQU CURSOR_ROW1 = 0xC0
 
   .DEF TEMP      = R16     ; Temporary value
-
   .DEF RVAL      = R24     ; Return value
-  .DEF PREV_KEY  = R25     ; Previous value
 
 ; ---------------------------------------------------------------------
 ; Start of program
@@ -40,7 +34,11 @@
   .INCLUDE "delay.inc"
   .INCLUDE "lcd.inc"
   .INCLUDE "keyboard.inc"
+
+  .INCLUDE "monitor.inc"
+  .INCLUDE "stats.inc"
   .INCLUDE "dice.inc"
+  .INCLUDE "stat_data.inc"
 
 hello_str:
   .DB "Hello!",0
@@ -57,9 +55,12 @@ init:
 
   CALL init_pins
 
-  CALL lcd_init ; Init the LCD
-  RCALL cursor_off
-  RCALL lcd_clear
+  CALL lcd_init
+  CALL cursor_off
+  CALL lcd_clear_display
+
+  CALL init_stat
+  CALL init_monitor
 
   LDI PREV_KEY, 0x00
   LDI RVAL, 0x00
@@ -72,13 +73,13 @@ init:
 ; Initializations I/O pins
 ; ---------------------------------------------------------------------
 init_pins:
-  ; Set output
+  ; SET OUTPUT
   LDI TEMP, 0xF0
   OUT DDRB, TEMP
   OUT DDRD, TEMP
   OUT DDRF, TEMP
 
-  ; Set input
+  ; SET INPUT
   LDI TEMP, 0x00
   OUT DDRE, TEMP
 
@@ -101,17 +102,4 @@ draw:
 ; ---------------------------------------------------------------------
 main:
   RCALL roll_dice
-
   RJMP main
-  ; MOV PREV_KEY, RVAL
-  ; RCALL read_keyboard
-  ; NOP
-  ; NOP
-  ; CP RVAL, PREV_KEY
-  ; BREQ main
-
-  ; CPI RVAL, NO_KEY
-  ; BREQ main
-
-  ; RCALL draw
-  ; RJMP main
