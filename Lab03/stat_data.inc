@@ -16,7 +16,7 @@
   .DSEG
   .ORG  0x100
 
-; max_value:  .BYTE 255
+max_value:  .BYTE 255
   .CSEG
 
 store_stat:

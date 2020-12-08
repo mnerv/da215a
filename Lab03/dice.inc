@@ -42,6 +42,9 @@ init_dice:
 
   RET
 
+; ---------------------------------------------------------------------
+; Print Welcome to the screen
+; ---------------------------------------------------------------------
 print_welcome:
   PRINTSTRING welcome_dice_str
   RET
@@ -52,17 +55,18 @@ test_dice:
   NOP
   NOP
   RCALL read_keyboard
+  RCALL to_ASCII
   CPI RVAL, ROLL_KEY
   BREQ roll
 
-  ; CPI RVAL, SHOW_STAT_KEY
-  ; BREQ show_stat
+  CPI RVAL, SHOW_STAT_KEY
+  BREQ call_showstat
 
-  ; CPI RVAL, CLEAR_STAT_KEY
-  ; BREQ clear_stat
+  CPI RVAL, CLEAR_STAT_KEY
+  BREQ call_clearstat
 
   CPI RVAL, MONITOR_KEY
-  BREQ show_monitor
+  BREQ call_monitor
 
   RET
 
@@ -76,14 +80,14 @@ roll:
   BREQ roll_dice
   RJMP test_dice
 
-; show_stat:
-;   RCALL showstat
-;   RJMP test_dice
+call_showstat:
+  RCALL showstat
+  RJMP test_dice
 
-; clear_stat:
-;   RCALL clearstat
-;   RJMP test_dice
+call_clearstat:
+  RCALL clearstat
+  RJMP test_dice
 
-show_monitor:
-  CALL monitor
+call_monitor:
+  RCALL monitor
   RJMP test_dice

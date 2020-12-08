@@ -6,7 +6,6 @@
 ; Author: Pratchaya Khansomboon
 ;
 ; Created: 24-11-2020
-;
 ; ---------------------------------------------------------------------
 
   .INCLUDE "m32u4def.inc"
