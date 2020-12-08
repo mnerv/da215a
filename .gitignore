@@ -4,3 +4,5 @@
 # Generated files
 *.hex
 *.obj
+*.o
+*.out
