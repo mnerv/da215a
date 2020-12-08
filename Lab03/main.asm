@@ -130,7 +130,26 @@ select_mode:
   RJMP main
 
 call_roll_dice:
+  RCALL lcd_clear_display
+  SET_CURSOR 0x80
+  PRINTSTRING rolling_str
+
   RCALL roll_dice
+
+  MOV R24, R16
+  RCALL store_stat
+
+  RCALL lcd_clear_display
+  SET_CURSOR 0x80
+  PRINTSTRING value_str
+
+  MOV R24, R16
+  RCALL printhex
+
+  ; 2 s of delay
+  LDI R24, 2
+  RCALL delay_s
+
   RJMP main
 
 call_showstat:
@@ -139,6 +158,8 @@ call_showstat:
 
 call_clearstat:
   RCALL clearstat
+
+  RCALL delay_1_s
   RJMP main
 
 call_monitor:

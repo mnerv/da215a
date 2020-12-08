@@ -11,7 +11,6 @@
 ; Constant definitions
 ; ---------------------------------------------------------------------
 
-
 welcome_dice_str:
   .DB "Welcome to dice!",0
 
@@ -31,8 +30,8 @@ init_dice:
   RCALL print_welcome
 
   ; 2 s of delay
-  LDI R24, 2
-  RCALL delay_s
+  ; LDI R24, 2
+  RCALL delay_1_s
 
   RCALL print_press_2
 
@@ -50,6 +49,9 @@ print_press_2:
   PRINTSTRING press_2_str
   RET
 
+; ---------------------------------------------------------------------
+; Roll Dice subroutine
+; ---------------------------------------------------------------------
 roll_dice:
   LDI R16, 6
 test_dice:
@@ -57,30 +59,12 @@ test_dice:
   NOP
   RCALL read_keyboard
   RCALL to_ASCII
+
   CPI RVAL, ROLL_KEY
   BREQ roll
 
-  RCALL lcd_clear_display
-  SET_CURSOR 0x80
-  PRINTSTRING value_str
-
-  MOV R24, R16
-  RCALL store_stat
-
-  RCALL printhex
-
-  ; 2 s of delay
-  LDI R24, 2
-  RCALL delay_s
-
   RET
-
 roll:
-  RCALL lcd_clear_display
-
-  SET_CURSOR 0x80
-  PRINTSTRING rolling_str
-
   DEC R16
   BREQ roll_dice
   RJMP test_dice
