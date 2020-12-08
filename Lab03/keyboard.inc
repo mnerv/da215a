@@ -43,7 +43,6 @@ scan_key:
   BRNE scan_key
   LDI R18, NO_KEY               ; no key was pressed!
 return_key_val:
-  MOV PREV_KEY, RVAL
   MOV RVAL, R18
   RET
 

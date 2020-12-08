@@ -16,13 +16,19 @@
   .DSEG
   .ORG  0x100
 
-max_byte:  .BYTE 7
+max_byte: .BYTE 7
   .CSEG
 
 store_stat:
+  LDI YL, LOW(max_byte)
+  LDI YH, HIGH(max_byte)
+  ST Y, R24
   RET
 
 get_stat:
+  LDI YL, LOW(max_byte)
+  LDI YH, HIGH(max_byte)
+  LD R24, Y
   RET
 
 clear_stat:

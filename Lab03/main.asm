@@ -95,19 +95,24 @@ init_pins:
 ;          R24: Key value
 ;          R24 > 0
 ; ---------------------------------------------------------------------
-draw_press_2:
-  RCALL print_press_2
+
 ; ---------------------------------------------------------------------
 ; Main loop
 ; ---------------------------------------------------------------------
 main:
   ; Read key and convert to ASCII
+  ; MOV PREV_KEY, RVAL
   RCALL read_keyboard
 
-  ; CP RVAL, PREV_KEY
-  ; BRNE draw_press_2
-  ; RCALL print_press_2
+  CPI RVAL, NO_KEY
+  BRNE select_mode
 
+draw_press_2:
+  ; CP RVAL, PREV_KEY
+  ; BREQ select_mode
+  RCALL print_press_2
+
+select_mode:
   RCALL to_ASCII
 
   CPI RVAL, ROLL_KEY
@@ -121,9 +126,6 @@ main:
 
   CPI RVAL, MONITOR_KEY
   BREQ call_monitor
-
-  CPI RVAL, NO_KEY
-  BRNE draw_press_2
 
   RJMP main
 

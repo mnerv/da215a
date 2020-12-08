@@ -30,7 +30,7 @@ value_str:
 init_dice:
   RCALL print_welcome
 
-  ; 2 s of 
+  ; 2 s of delay
   LDI R24, 2
   RCALL delay_s
 
@@ -59,6 +59,19 @@ test_dice:
   RCALL to_ASCII
   CPI RVAL, ROLL_KEY
   BREQ roll
+
+  RCALL lcd_clear_display
+  SET_CURSOR 0x80
+  PRINTSTRING value_str
+
+  MOV R24, R16
+  RCALL store_stat
+
+  RCALL printhex
+
+  ; 2 s of delay
+  LDI R24, 2
+  RCALL delay_s
 
   RET
 
