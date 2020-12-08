@@ -19,53 +19,53 @@
 max_byte: .BYTE 7
   .CSEG
 
-get_stat_pointer_y:
-  LDI YL, LOW(max_byte)
-  LDI YH, HIGH(max_byte)
+get_stat_pointer_x:
+  LDI XL, LOW(max_byte)
+  LDI XH, HIGH(max_byte)
   RET
 
 store_stat:
-  RCALL get_stat_pointer_y
+  RCALL get_stat_pointer_x
 
-  LD R16, Y
+  LD R16, X
   INC R16
-  ST Y, R16
+  ST X, R16
 
-  ADD YL, R24
-  LD R24, Y
+  ADD XL, R24
+  LD R24, X
   INC R24
-  ST Y, R24
+  ST X, R24
 
   RET
 
 get_stat:
-  RCALL get_stat_pointer_y
-  ADD YL, R24
-  LD R24, Y
+  RCALL get_stat_pointer_x
+  ADD XL, R24
+  LD R24, X
   RET
 
 clear_stat:
-  RCALL get_stat_pointer_y
+  RCALL get_stat_pointer_x
 
   LDI R24, 0x00     ; Roll Count
-  ST Y, R24
+  ST X, R24
 
-  INC YL
-  ST Y, R24         ; One count
+  INC XL
+  ST X, R24         ; One count
 
-  INC YL
-  ST Y, R24         ; Two count
+  INC XL
+  ST X, R24         ; Two count
 
-  INC YL
-  ST Y, R24         ; Three count
+  INC XL
+  ST X, R24         ; Three count
 
-  INC YL
-  ST Y, R24         ; Four count
+  INC XL
+  ST X, R24         ; Four count
 
-  INC YL
-  ST Y, R24         ; Five count
+  INC XL
+  ST X, R24         ; Five count
 
-  INC YL
-  ST Y, R24         ; Six count
+  INC XL
+  ST X, R24         ; Six count
 
   RET
