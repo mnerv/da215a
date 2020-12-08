@@ -22,6 +22,11 @@
   .DEF TEMP      = R16     ; Temporary value
   .DEF RVAL      = R24     ; Return value
 
+  .EQU ROLL_KEY = '2'
+  .EQU SHOW_STAT_KEY = '3'
+  .EQU CLEAR_STAT_KEY = '8'
+  .EQU MONITOR_KEY = '9'
+
 ; ---------------------------------------------------------------------
 ; Start of program
 ; ---------------------------------------------------------------------
@@ -90,15 +95,50 @@ init_pins:
 ;          R24: Key value
 ;          R24 > 0
 ; ---------------------------------------------------------------------
-draw:
-  PUSH RVAL
-  RCALL lcd_write_chr
-  POP RVAL
-  RET
-
+draw_press_2:
+  RCALL print_press_2
 ; ---------------------------------------------------------------------
 ; Main loop
 ; ---------------------------------------------------------------------
 main:
+  ; Read key and convert to ASCII
+  RCALL read_keyboard
+
+  ; CP RVAL, PREV_KEY
+  ; BRNE draw_press_2
+  ; RCALL print_press_2
+
+  RCALL to_ASCII
+
+  CPI RVAL, ROLL_KEY
+  BREQ call_roll_dice
+
+  CPI RVAL, SHOW_STAT_KEY
+  BREQ call_showstat
+
+  CPI RVAL, CLEAR_STAT_KEY
+  BREQ call_clearstat
+
+  CPI RVAL, MONITOR_KEY
+  BREQ call_monitor
+
+  CPI RVAL, NO_KEY
+  BRNE draw_press_2
+
+  RJMP main
+
+call_roll_dice:
   RCALL roll_dice
+  RJMP main
+
+call_showstat:
+  RCALL showstat
+  RJMP main
+
+call_clearstat:
+  RCALL clearstat
+  RJMP main
+
+call_monitor:
+  RCALL monitor
   RJMP main
