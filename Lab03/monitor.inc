@@ -54,28 +54,28 @@ monitor:
 	LDI	XH,	0x00	; set start value
 	LDI	XL,	0x00
 moni_next:
-	RCALL lcd_clear_display
-	RCALL moni_print_address
-	LD	RVAL, X+			; get memory value where X points...
+	RCALL	lcd_clear_display
+	RCALL	moni_print_address
+	LD		RVAL, X+			; get memory value where X points...
 	RCALL printhex			; print that value on LCD
 	RCALL moni_read_keyboard ; returns with "a real key", not NO_KEY!
 	CPI		RVAL, 0x03		; '*'?
-	BREQ moniquit			; yes, quit
+	BREQ	moniquit			; yes, quit
 	CPI		RVAL, 0x0B		; '#'?
-	BREQ moni_more
+	BREQ	moni_more
 
 	; some number was returned. Use it in the X register
-	RCALL to_ASCII	; map key to corresponding number.....
-	SUBI RVAL, 0x30	; convert from ASCII to number
-	MOV	XH, RVAL	; use number as high start address
-	CLR	XL			; set XL to 00
-	RJMP moni_next
+	RCALL	to_ASCII	; map key to corresponding number.....
+	SUBI	RVAL, 0x30	; convert from ASCII to number
+	MOV		XH, RVAL	; use number as high start address
+	CLR		XL			; set XL to 00
+	RJMP	moni_next
 
 moni_more:			; continue and display next address
 					; X is already pointing at the next address...
 	LDI		RVAL, 200
 	RCALL	delay_ms
-	RJMP moni_next
+	RJMP	moni_next
 	
 
 moniquit:
