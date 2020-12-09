@@ -7,6 +7,8 @@ USBPORT+=$(shell ls /dev/tty.usbmodem*)
 
 all: main.hex
 
+rebuild: clean all
+
 main.hex: main.elf
 	avr-objcopy -O ihex -j .text -j .data main.elf main.hex
 
@@ -43,4 +45,4 @@ install: main.hex
 	avrdude -v -p atmega32u4 -c avr109 -P ${USBPORT} -b 115200 -D -U flash:w:./main.hex:i
 
 clean:
-	rm -f *.hex *.o
+	rm -f *.hex *.o *.elf
