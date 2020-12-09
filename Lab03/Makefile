@@ -9,7 +9,7 @@ rebuild: clean all
 USBPORT+=$(shell ls /dev/tty.usbmodem*)
 
 # Assemble the code
-main.hex: main.asm
+main.hex: main.asm delay.inc dice.inc keyboard.inc lcd.inc monitor.inc stat_data.inc stats.inc
 	$(CC) main.asm
 
 # Upload to the board

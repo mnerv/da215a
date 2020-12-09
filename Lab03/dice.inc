@@ -28,11 +28,7 @@ value_str:
 ; ---------------------------------------------------------------------
 init_dice:
   RCALL print_welcome
-
-  ; 2 s of delay
-  ; LDI R24, 2
   RCALL delay_1_s
-
   RCALL print_press_2
 
   RET
@@ -54,16 +50,17 @@ print_press_2:
 ; ---------------------------------------------------------------------
 roll_dice:
   LDI R16, 6
+
 test_dice:
   NOP
   NOP
   RCALL read_keyboard
-  RCALL to_ASCII
 
   CPI RVAL, ROLL_KEY
   BREQ roll
 
   RET
+
 roll:
   DEC R16
   BREQ roll_dice
