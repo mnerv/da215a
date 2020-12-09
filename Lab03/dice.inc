@@ -10,15 +10,11 @@
 ; ---------------------------------------------------------------------
 ; Constant definitions
 ; ---------------------------------------------------------------------
-  .EQU ROLL_KEY = '2'
-  .EQU SHOW_STAT_KEY = '3'
-  .EQU CLEAR_STAT_KEY = '8'
-  .EQU MONITOR_KEY = '9'
 
 welcome_dice_str:
   .DB "Welcome to dice!",0
 
-press_1_str:
+press_2_str:
   .DB "Press 2 to roll",0
 
 rolling_str:
@@ -33,12 +29,11 @@ value_str:
 init_dice:
   RCALL print_welcome
 
-  ; 2 s of 
-  LDI R24, 2
-  RCALL delay_s
+  ; 2 s of delay
+  ; LDI R24, 2
+  RCALL delay_1_s
 
-  RCALL lcd_clear_display
-  PRINTSTRING press_1_str
+  RCALL print_press_2
 
   RET
 
@@ -49,6 +44,14 @@ print_welcome:
   PRINTSTRING welcome_dice_str
   RET
 
+print_press_2:
+  RCALL lcd_clear_display
+  PRINTSTRING press_2_str
+  RET
+
+; ---------------------------------------------------------------------
+; Roll Dice subroutine
+; ---------------------------------------------------------------------
 roll_dice:
   LDI R16, 6
 test_dice:
@@ -56,38 +59,12 @@ test_dice:
   NOP
   RCALL read_keyboard
   RCALL to_ASCII
+
   CPI RVAL, ROLL_KEY
   BREQ roll
 
-  CPI RVAL, SHOW_STAT_KEY
-  BREQ call_showstat
-
-  CPI RVAL, CLEAR_STAT_KEY
-  BREQ call_clearstat
-
-  CPI RVAL, MONITOR_KEY
-  BREQ call_monitor
-
   RET
-
 roll:
-  RCALL lcd_clear_display
-
-  SET_CURSOR 0x80
-  PRINTSTRING rolling_str
-
   DEC R16
   BREQ roll_dice
-  RJMP test_dice
-
-call_showstat:
-  RCALL showstat
-  RJMP test_dice
-
-call_clearstat:
-  RCALL clearstat
-  RJMP test_dice
-
-call_monitor:
-  RCALL monitor
   RJMP test_dice

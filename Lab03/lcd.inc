@@ -31,6 +31,7 @@ str_1:
 
 ; * ---------------------------------------------------------------------------
 ; LCD_WRITE_CHAR
+;
 ; Write character to the LCD
 ; Parameter: IN
 ;            R24
@@ -42,12 +43,25 @@ str_1:
 
 ; * ---------------------------------------------------------------------------
 ; SET_CUSOR
+;
 ; Set the cursor
 ; * ---------------------------------------------------------------------------
 .MACRO SET_CURSOR
   LDI R24, @0
   RCALL lcd_write_instr
 .ENDMACRO
+
+; * ---------------------------------------------------------------------------
+; PRINTSTRING
+;
+; Print string macro
+; * ---------------------------------------------------------------------------
+.MACRO PRINTSTRING
+  LDI ZH, HIGH(@0 << 1)
+  LDI ZL, LOW(@0 << 1)
+  RCALL write_string
+.ENDMACRO
+
 
 ; * ---------------------------------------------------------------------------
 ; Write the most significant nibble (of the content in R24) to the LCD.
@@ -151,12 +165,10 @@ write_welcome:
   LDI ZL, LOW(str_1 << 1)
   RCALL write_string
 
-.MACRO PRINTSTRING
-  LDI ZH, HIGH(@0 << 1)
-  LDI ZL, LOW(@0 << 1)
-  RCALL write_string
-.ENDMACRO
-
+; * ---------------------------------------------------------------------------
+; Write string to the LCD
+; Used my MACRO PRINTSTRING
+; * ---------------------------------------------------------------------------
 write_string:
   LPM R24, Z+
   CPI R24, NULL_CHAR

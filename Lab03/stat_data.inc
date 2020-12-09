@@ -16,14 +16,56 @@
   .DSEG
   .ORG  0x100
 
-max_value:  .BYTE 255
+max_byte: .BYTE 7
   .CSEG
 
+get_stat_pointer_x:
+  LDI XL, LOW(max_byte)
+  LDI XH, HIGH(max_byte)
+  RET
+
 store_stat:
+  RCALL get_stat_pointer_x
+
+  LD R16, X
+  INC R16
+  ST X, R16
+
+  ADD XL, R24
+  LD R24, X
+  INC R24
+  ST X, R24
+
   RET
 
 get_stat:
+  RCALL get_stat_pointer_x
+  ADD XL, R24
+  LD R24, X
   RET
 
 clear_stat:
+  RCALL get_stat_pointer_x
+
+  LDI R24, 0x00     ; Roll Count
+  ST X, R24
+
+  INC XL
+  ST X, R24         ; One count
+
+  INC XL
+  ST X, R24         ; Two count
+
+  INC XL
+  ST X, R24         ; Three count
+
+  INC XL
+  ST X, R24         ; Four count
+
+  INC XL
+  ST X, R24         ; Five count
+
+  INC XL
+  ST X, R24         ; Six count
+
   RET

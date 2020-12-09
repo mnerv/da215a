@@ -44,8 +44,6 @@ scan_key:
   LDI R18, NO_KEY               ; no key was pressed!
 return_key_val:
   MOV RVAL, R18
-  ; CPI RVAL, NO_KEY
-  ; BRNE to_ASCII 
   RET
 
 to_ASCII:
