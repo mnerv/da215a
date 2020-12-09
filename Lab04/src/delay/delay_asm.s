@@ -1,4 +1,3 @@
-﻿; #include <avr/io.h>
 #include <avr/io.h>
 
 .GLOBAL delay_1_micros

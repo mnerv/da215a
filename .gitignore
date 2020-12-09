@@ -2,6 +2,7 @@
 .vscode
 
 # Generated files
+.DS_Store
 *.hex
 *.obj
 *.o
