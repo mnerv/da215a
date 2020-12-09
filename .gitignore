@@ -1,11 +1,15 @@
-# Workspace
+# workspace configs
 .vscode
 
-# Generated files
-.DS_Store
+# generated files
 *.hex
 *.obj
-*.o
+*.bin
 *.out
+*.o
 *.elf
+*.lst
+
+# macOS files
+.DS_Store
 *.icloud

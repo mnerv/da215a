@@ -1,6 +1,6 @@
 # compiler options
 CC=avr-gcc
-CFLAGS= -Wall -g -Os -mmcu=atmega32u4 -I./src
+CFLAGS=-Wall -g -Os -mmcu=atmega32u4 -I./src
 
 # For macOS
 USBPORT+=$(shell ls /dev/tty.usbmodem*)
@@ -16,6 +16,9 @@ main.hex: main.elf
 main.elf: main.o guess_nr.o random.o numkey.o lcd.o hmi.o delay.o delay_asm.o
 	$(CC) $(CFLAGS) main.o guess_nr.o random.o numkey.o lcd.o hmi.o delay.o delay_asm.o -o main.elf
 
+# ---------------------------------------------------------------- 
+# Compile to object file no link
+# ---------------------------------------------------------------- 
 main.o: ./src/main.c ./src/common.h
 	$(CC) $(CFLAGS) -c ./src/main.c
 
@@ -45,4 +48,4 @@ install: main.hex
 	avrdude -v -p atmega32u4 -c avr109 -P ${USBPORT} -b 115200 -D -U flash:w:./main.hex:i
 
 clean:
-	rm -f *.hex *.o *.elf
+	rm -f *.hex *.o *.elf *.lst
