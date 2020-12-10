@@ -5,6 +5,9 @@ CFLAGS=-Wall -g -Os -mmcu=atmega32u4 -I./src
 # For macOS
 USBPORT+=$(shell ls /dev/tty.usbmodem*)
 
+# For Linux only
+# USBPORT+=$(shell ls /dev/ttyACM*)
+
 all: main.hex
 
 rebuild: clean all
@@ -14,7 +17,7 @@ main.hex: main.elf
 
 # Linking
 main.elf: main.o guess_nr.o random.o numkey.o lcd.o hmi.o delay.o delay_asm.o
-	$(CC) $(CFLAGS) main.o guess_nr.o random.o numkey.o lcd.o hmi.o delay.o delay_asm.o -o main.elf
+	$(CC) $(CFLAGS) $^ -o main.elf
 
 # ---------------------------------------------------------------- 
 # Compile to object file no link
