@@ -25,7 +25,7 @@
   .EQU ROLL_KEY       = 0x04      ; '2' on the keypad
   .EQU SHOW_STAT_KEY  = 0x08      ; '3' on the keypad
   .EQU CLEAR_STAT_KEY = 0x06      ; '8' on the keypad
-  .EQU MONITOR_KEY    = 0x09      ; '8' on the keypad
+  .EQU MONITOR_KEY    = 0x0A      ; '9' on the keypad
 
 ; ---------------------------------------------------------------------
 ; Start of program
