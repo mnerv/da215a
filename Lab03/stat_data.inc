@@ -30,6 +30,8 @@ get_stat_pointer_x:
 
 ; ---------------------------------------------------------------------
 ; Store stat subroutine
+; Parameter IN:
+;               R24 number index
 ; ---------------------------------------------------------------------
 store_stat:
   RCALL get_stat_pointer_x
@@ -47,6 +49,11 @@ store_stat:
 
 ; ---------------------------------------------------------------------
 ; Get stat
+;
+; Parameter IN:
+;               R24 number index
+;
+; Return: R24 value fron the data memory
 ; ---------------------------------------------------------------------
 get_stat:
   RCALL get_stat_pointer_x
@@ -55,7 +62,7 @@ get_stat:
   RET
 
 ; ---------------------------------------------------------------------
-; Clear stat
+; Clear stat will clear all the data collected in memory
 ; ---------------------------------------------------------------------
 clear_stat:
   RCALL get_stat_pointer_x
