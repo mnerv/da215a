@@ -18,11 +18,16 @@
 
 #include <avr/io.h>
 
-#include "guess_nr.h"
-#include "hmi/hmi.h"
-#include "random/random.h"
+// #include "common.h"
+// #include "guess_nr.h"
+// #include "hmi/hmi.h"
+// #include "random/random.h"
+#include "lcd/lcd.h"
 
 int main(void) {
+    lcd_init();
+    lcd_write_str("Hello, World!");
+
     while (1) {
     }
 

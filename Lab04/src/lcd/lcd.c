@@ -5,6 +5,7 @@
  * LCD controller (or compatible circuit).
  *
  * Author:  Mathias Beckius
+ *          Pratchaya Khansomboon
  *
  * Date:    2014-11-28
  */
@@ -119,9 +120,9 @@ void lcd_set_cursor_pos(uint8_t row, uint8_t col) {
 void lcd_write(enum lcd_register lcd_reg, uint8_t data) {
     // select register
     if (lcd_reg == INSTRUCTION) {
-        CLR_BIT(PORTD, 6); // Instruction Register
+        CLR_BIT(PORTD, 6);  // Instruction Register
     } else {
-        SET_BIT(PORTD, 6); // Data Register
+        SET_BIT(PORTD, 6);  // Data Register
     }
     // write data
     write_4bit_msb(data);
@@ -136,5 +137,8 @@ void lcd_write(enum lcd_register lcd_reg, uint8_t data) {
  *      p_str: pointer to the string's first character
  */
 void lcd_write_str(char* p_str) {
-    // UPPGIFT: färdigställ funktionen!
+    while (*p_str) {
+        lcd_write(DATA, *p_str);
+        p_str++;
+    }
 }

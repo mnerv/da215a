@@ -13,11 +13,11 @@ all: main.hex
 rebuild: clean all
 
 main.hex: main.elf
-	avr-objcopy -O ihex -j .text -j .data main.elf main.hex
+	avr-objcopy -O ihex -j .text -j .data $< $@
 
 # Linking
 main.elf: main.o guess_nr.o random.o numkey.o lcd.o hmi.o delay.o delay_asm.o
-	$(CC) $(CFLAGS) $^ -o main.elf
+	$(CC) $(CFLAGS) $^ -o $@
 
 # ---------------------------------------------------------------- 
 # Compile to object file no link
