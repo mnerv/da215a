@@ -14,7 +14,6 @@
 #include <inttypes.h>
 
 void random_seed(void);
-
 uint16_t random_get_nr(uint16_t);
 
 #endif /* RANDOM_H_ */

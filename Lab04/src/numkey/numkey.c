@@ -52,19 +52,14 @@ void numkey_init(void) {
  */
 char numkey_read(void) {
     uint8_t i;
-    /* UPPGIFT: skriv en for-sats som stegar igenom alla tangenter, använd
-     * variabeln i. */
-    {
-        // set column and row
-        // UPPGIFT: använd SET_BIT_LEVELS() för att sätta bitar i registret
-        // PORTB! wait before reading pin
-        delay_ms(1);
-        // if key was pressed...
-        if (1) { // UPPGIFT: skriv om det logiska uttrycket i if-satsen, så att
-                 // uttrycket blir sant om bit 6 i PINE är 1.
-            return key_map[i];
-        }
+
+    for (i = 0; i < 16; i++) {
+        SET_BIT_LEVELS(PORTB, 0b00001111, i << 4);
+        delay_ms(5);
+
+        if (PINE & 0b01000000) return key_map[i];
     }
+
     // no key was pressed!
     return NO_KEY;
 }

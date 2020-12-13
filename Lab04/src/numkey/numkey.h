@@ -15,7 +15,6 @@
 #define NO_KEY '\0'
 
 void numkey_init(void);
-
 char numkey_read(void);
 
 #endif /* NUMKEY_H_ */
