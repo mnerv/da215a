@@ -23,10 +23,14 @@
 
 /*
  * This macro is used to modify several bits of a register.
+ *
  * Example:
- *	Bit 7-4 of PORTD should be set to 1010, while the
- *	rest of the register should NOT be modified! Usage:
- *		SET_BIT_LEVELS(PORTD, 0b00001111, 0b10100000);
+ * Bit 7-4 of PORTD should be set to 1010, while the
+ * rest of the register should NOT be modified!
+ *
+ * Usage:
+ * SET_BIT_LEVELS(PORTD, 0b00001111, 0b10100000);
+ *
  * The bit mask is used to clear the bits that should be modified.
  */
 #define SET_BIT_LEVELS(reg, bit_mask, bit_data) \

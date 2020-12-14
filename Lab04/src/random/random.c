@@ -38,6 +38,8 @@ static void init_adc(void) {
 
 /*
  * Read the ADC to get a random number.
+ *
+ * @return The analog value
  */
 static uint16_t read_adc(void) {
     // start conversion
@@ -61,14 +63,14 @@ void random_seed(void) {
 /*
  * Generate a pseudo-random number.
  *
- * parameter:
- *	max: specifies the range of integers
- * return:
- *	random number between 0-(max-1)
+ * @param max specifies the range of integers
+ *
+ * @return random number between 0-(max-1)
  */
 uint16_t random_get_nr(uint16_t max) {
     if (max == 0) {
         return 0;
     }
+
     return (random() % max);
 }

@@ -21,16 +21,15 @@ static void show_result(uint16_t);
  * The function never exists before the user has entered a number
  * between 1-100.
  *
- * return:
- *  the number that were entered by the user.
+ * @return the number that were entered by the user.
  */
 static uint16_t get_nr(void) {
     uint16_t input_length;
     uint16_t guessed_nr;
     while (1) {
-        input_length = 0; // UPPGIFT: ändra koden så att 'input_int()' anropas,
-                          // returvärdet ska lagras i 'input_length',
-                          // 'guessed_nr' ska modifieras av 'input_int()'.
+        input_length = 0;  // UPPGIFT: ändra koden så att 'input_int()' anropas,
+                           // returvärdet ska lagras i 'input_length',
+                           // 'guessed_nr' ska modifieras av 'input_int()'.
         // if the user entered a number, and if it was between 1 and 100...
         if (input_length > 0 && guessed_nr >= 1 && guessed_nr <= 100) {
             // ...return that number!
@@ -45,11 +44,11 @@ static uint16_t get_nr(void) {
 /*
  * Playing game, until the correct number is guessed!
  *
- * parameter:
- *  rnd_nr: random number (to be guessed)
- *  p_nr_of_guesses: pointer to variable with the current number of guesses
- * return:
- *  Returns 1 if the game should continue, 0 if the game is over.
+ * @param rnd_nr: random number (to be guessed)
+ * @param p_nr_of_guesses: pointer to variable with the current number of
+ * guesses
+ *
+ * @return Returns 1 if the game should continue, 0 if the game is over.
  */
 static uint8_t playing_game(uint16_t rnd_nr, uint16_t* p_nr_of_guesses) {
     uint16_t guessed_nr;
@@ -62,20 +61,19 @@ static uint8_t playing_game(uint16_t rnd_nr, uint16_t* p_nr_of_guesses) {
     // if the guessed number was the correct number...
     if (guessed_nr == rnd_nr) {
         output_msg("Correct number!", "", 1);
-        return 0;                     // return 0 for "game over!"
-    } else if (guessed_nr < rnd_nr) { // number too low?
+        return 0;                      // return 0 for "game over!"
+    } else if (guessed_nr < rnd_nr) {  // number too low?
         output_msg("Too low!", "", 1);
-    } else { // number too high?
+    } else {  // number too high?
         output_msg("Too high!", "", 1);
     }
-    return 1; // return 1 for "keep on playing!"
+    return 1;  // return 1 for "keep on playing!"
 }
 
 /*
  * Show result (when the game has ended!)
  *
- * parameter:
- *  nr_of_guesses:  the number of guesses that was required
+ * @param nr_of_guesses: the number of guesses that was required
  *                  to guess the correct number.
  */
 static void show_result(uint16_t nr_of_guesses) {
@@ -93,8 +91,7 @@ static void show_result(uint16_t nr_of_guesses) {
 /*
  * Play a round of "Guess the number".
  *
- * parameter:
- *    rnd_nr: random number (to be guessed)
+ * @param rnd_nr: random number (to be guessed)
  */
 void play_guess_nr(uint16_t rnd_nr) {
     uint16_t nr_of_guesses = 0;

@@ -39,25 +39,30 @@ void numkey_init(void) {
 
 /*
  * Read keyboard.
- * If a key is pressed, then the corresponding character
+ *
+ * @return If a key is pressed, then the corresponding character
  * is returned:
  *  If '1' is pressed, then the character '1' is returned.
  * Otherwise a NO_KEY character is returned.
  * Important! Due to MUX propagation delay and button bounce, it's necessary
  * to generate a delay (after setting column and row) before reading the pin.
  *
- * return:
- *  If a key is pressed, then a character that represents the key is
- *returned. Otherwise, a NO_KEY character is returned!
+ * If a key is pressed, then a character that represents the key is
+ * returned. Otherwise, a NO_KEY character is returned!
  */
 char numkey_read(void) {
     uint8_t i;
 
     for (i = 0; i < 16; i++) {
         SET_BIT_LEVELS(PORTB, 0b00001111, i << 4);
-        delay_ms(5);
+        delay_ms(1);
 
-        if (PINE & 0b01000000) return key_map[i];
+        if (PINE & 0b01000000) {
+            if (i < 12)
+                return key_map[i];
+            else
+                return i;
+        }
     }
 
     // no key was pressed!

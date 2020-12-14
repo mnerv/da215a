@@ -14,9 +14,33 @@
 
 #include <inttypes.h>
 
+/**
+ * Delay 1 microsecond using the assembly. This only works for 16 MHz clock.
+ */
 extern void delay_1_micros(void);
+
+/**
+ * Delay x amount of micro seconds using assembly. This only works for 16 MHz
+ * clock.
+ *
+ * @param micros Time in microseconds.
+ */
 extern void delay_micros(uint8_t);
+
+/**
+ * Delay x amount of milliseconds. This function uses delay_micros to achieve ms
+ * of delays. This only works for 16 MHz clock.
+ *
+ * @param ms Time in milliseconds.
+ */
 extern void delay_ms(uint8_t);
+
+/**
+ * Delay x amount of seconds. This function uses delay_ms to achive second of
+ * delays. This only works for 16 MHz clock.
+ *
+ * @param s Time in seconds.
+ */
 extern void delay_s(uint8_t);
 
 #endif /* DELAY_H_ */

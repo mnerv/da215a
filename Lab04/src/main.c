@@ -18,26 +18,16 @@
 
 #include <avr/io.h>
 
-// #include "common.h"
-// #include "guess_nr.h"
-// #include "hmi/hmi.h"
-// #include "random/random.h"
-#include "lcd/lcd.h"
-#include "numkey/numkey.h"
+#include "common.h"
+#include "guess_nr.h"
+#include "hmi/hmi.h"
+#include "random/random.h"
 
 int main(void) {
-    numkey_init();
-    lcd_init();
-    lcd_write_str("Hello, World!");
-    lcd_set_cursor_pos(1, 0);
-
-    char prev_key;
-    char key;
+    hmi_init();
+    output_msg("Welcome!", "Let's play...", 3);
 
     while (1) {
-        prev_key = key;
-        key = numkey_read();
-        if (key != NO_KEY && key != prev_key) lcd_write(DATA, key);
     }
 
     return 0;
