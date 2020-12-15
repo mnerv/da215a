@@ -1,0 +1,13 @@
+BasedOnStyle: Google
+IndentWidth: 4
+TabWidth: 4
+SortIncludes: false
+CompactNamespaces: true
+NamespaceIndentation: All
+AllowAllConstructorInitializersOnNextLine: true
+AlignTrailingComments: true
+AllowAllArgumentsOnNextLine: true
+PointerAlignment: Right
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortLoopsOnASingleLine: true
