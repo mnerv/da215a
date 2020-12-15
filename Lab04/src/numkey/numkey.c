@@ -14,7 +14,7 @@
 #include <avr/io.h>
 #include <inttypes.h>
 
-/*
+/**
  * Key mapping table for the numeric keyboard.
  * The positions are defined a 4-bit address. The 4 MSB's represents the
  * keyboard's columns, the 4 LSB's represents the keyboards rows:
@@ -26,7 +26,7 @@
 static const char key_map[12] = {'1', '4', '7', '*', '2', '5',
                                  '8', '0', '3', '6', '9', '#'};
 
-/*
+/**
  * Initialization of the numeric keyboard.
  * This function configures the ports and pins to be used by the keyboard.
  */
@@ -37,7 +37,7 @@ void numkey_init(void) {
     DDRB = 0xF0;
 }
 
-/*
+/**
  * Read keyboard.
  *
  * @return If a key is pressed, then the corresponding character

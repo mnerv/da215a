@@ -22,7 +22,7 @@
 static void init_adc(void);
 static uint16_t read_adc(void);
 
-/*
+/**
  * Initialize the ADC.
  */
 static void init_adc(void) {
@@ -36,7 +36,7 @@ static void init_adc(void) {
     DIDR0 = 1;
 }
 
-/*
+/**
  * Read the ADC to get a random number.
  *
  * @return The analog value
@@ -51,7 +51,7 @@ static uint16_t read_adc(void) {
     return ((ADCH << 8) | ADCL);
 }
 
-/*
+/**
  * Generates a seed for the pseudo-random number generator.
  * This function should only be run once!
  */
@@ -60,7 +60,7 @@ void random_seed(void) {
     srandom(read_adc());
 }
 
-/*
+/**
  * Generate a pseudo-random number.
  *
  * @param max specifies the range of integers
@@ -68,9 +68,7 @@ void random_seed(void) {
  * @return random number between 0-(max-1)
  */
 uint16_t random_get_nr(uint16_t max) {
-    if (max == 0) {
-        return 0;
-    }
+    if (max == 0) { return 0; }
 
     return (random() % max);
 }

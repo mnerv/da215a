@@ -11,17 +11,23 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-/*
+/**
  * This macro is used to set a specific bit in a register.
+ *
+ * @param reg traget register
+ * @param pos bit position
  */
 #define SET_BIT(reg, pos) (reg) |= (1 << pos)
 
-/*
+/**
  * This macro is used to clear a specific bit in a register.
+ *
+ * @param reg target register
+ * @param pos bit position
  */
 #define CLR_BIT(reg, pos) (reg) &= ~(1 << pos)
 
-/*
+/**
  * This macro is used to modify several bits of a register.
  *
  * Example:

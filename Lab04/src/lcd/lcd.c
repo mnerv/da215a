@@ -1,4 +1,4 @@
-﻿/*
+﻿/**
  * lcd.c
  *
  * This file contains subroutines for communicating with a Hitachi HD44780
@@ -17,11 +17,10 @@
 
 static void write_4bit_msb(uint8_t);
 
-/*
+/**
  * Write the 4 MSB's of 'data' to the LCD.
  *
- * parameter:
- *  data: 4 bits of data
+ * @param data: 4 bits of data
  */
 static void write_4bit_msb(uint8_t data) {
     // write data
@@ -32,7 +31,7 @@ static void write_4bit_msb(uint8_t data) {
     CLR_BIT(PORTD, 7);
 }
 
-/*
+/**
  * Initialization of the LCD:
  *  - configuration of ports and pins
  *  - configuration of LCD communication
@@ -73,7 +72,7 @@ void lcd_init(void) {
     lcd_write(INSTRUCTION, 0x06);
 }
 
-/*
+/**
  * Clears the LCD and moves the cursor to position row 0, column 0.
  */
 void lcd_clear(void) {
@@ -81,15 +80,15 @@ void lcd_clear(void) {
     delay_ms(2);
 }
 
-/*
+/**
  * Sets mode of the cursor.
- * The cursor can be set to:
- *	CURSOR_OFF:     cursor is turned off
- *	CURSOR_ON:      cursor is turned on
- *	CURSOR_BLINK:   cursor is blinking
  *
- * parameter:
- *      mode: cursor mode
+ * The cursor can be set to:
+ *  - CURSOR_OFF:     cursor is turned off
+ *  - CURSOR_ON:      cursor is turned on
+ *  - CURSOR_BLINK:   cursor is blinking
+ *
+ * @param mode: cursor mode
  */
 void lcd_set_cursor_mode(enum lcd_cursor mode) {
     uint8_t cursor_mode;
@@ -97,12 +96,11 @@ void lcd_set_cursor_mode(enum lcd_cursor mode) {
     lcd_write(INSTRUCTION, cursor_mode);
 };
 
-/*
+/**
  * Set position of the cursor.
  *
- * parameter:
- *       row: 0 is the first row, 1 is the second row
- *       col: 0 is the first column, 15 is the last visible column
+ * @param row: 0 is the first row, 1 is the second row
+ * @param col: 0 is the first column, 15 is the last visible column
  */
 void lcd_set_cursor_pos(uint8_t row, uint8_t col) {
     uint8_t cursor_pos;
@@ -110,12 +108,11 @@ void lcd_set_cursor_pos(uint8_t row, uint8_t col) {
     lcd_write(INSTRUCTION, cursor_pos);
 }
 
-/*
+/**
  * Writes data or instruction to the LCD.
  *
- * parameter:
- *      lcd_reg: register to communicate with (Instruction or Data register)
- *      data: 8-bit instruction or data (character)
+ * @param lcd_reg: register to communicate with (Instruction or Data register)
+ * @param data: 8-bit instruction or data (character)
  */
 void lcd_write(enum lcd_register lcd_reg, uint8_t data) {
     // select register
@@ -130,11 +127,10 @@ void lcd_write(enum lcd_register lcd_reg, uint8_t data) {
     delay_micros(45);
 }
 
-/*
+/**
  * Write a string of character to the LCD.
  *
- * parameter:
- *      p_str: pointer to the string's first character
+ * @param p_str: pointer to the string's first character
  */
 void lcd_write_str(const char *p_str) {
     while (*p_str) {

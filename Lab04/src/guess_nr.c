@@ -16,7 +16,7 @@ static uint16_t get_nr(void);
 static uint8_t playing_game(uint16_t, uint16_t*);
 static void show_result(uint16_t);
 
-/*
+/**
  * Let the user make a guess by entering a number.
  * The function never exists before the user has entered a number
  * between 1-100.
@@ -41,7 +41,7 @@ static uint16_t get_nr(void) {
     }
 }
 
-/*
+/**
  * Playing game, until the correct number is guessed!
  *
  * @param rnd_nr: random number (to be guessed)
@@ -70,7 +70,7 @@ static uint8_t playing_game(uint16_t rnd_nr, uint16_t* p_nr_of_guesses) {
     return 1;  // return 1 for "keep on playing!"
 }
 
-/*
+/**
  * Show result (when the game has ended!)
  *
  * @param nr_of_guesses: the number of guesses that was required
@@ -88,7 +88,7 @@ static void show_result(uint16_t nr_of_guesses) {
     }
 }
 
-/*
+/**
  * Play a round of "Guess the number".
  *
  * @param rnd_nr: random number (to be guessed)
@@ -98,8 +98,7 @@ void play_guess_nr(uint16_t rnd_nr) {
     // show initial message, before game starts.
     output_msg("Can you guess", "the number?", 3);
     // play game until the correct number is guessed!
-    while (playing_game(rnd_nr, &nr_of_guesses))
-        ;
+    while (playing_game(rnd_nr, &nr_of_guesses)) {}
     // show result!
     show_result(nr_of_guesses);
 }

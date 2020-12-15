@@ -8,3 +8,6 @@ AllowAllConstructorInitializersOnNextLine: true
 AlignTrailingComments: true
 AllowAllArgumentsOnNextLine: true
 PointerAlignment: Right
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortLoopsOnASingleLine: true

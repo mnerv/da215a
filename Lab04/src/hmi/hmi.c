@@ -1,4 +1,4 @@
-﻿/*
+﻿/**
  * hmi.c
  *
  * Functions for user interactions:
@@ -18,7 +18,7 @@
 
 static void str_to_uint16(char*, uint8_t, uint16_t*);
 
-/*
+/**
  * Convert a string of number characters to a integer number.
  * Important! Error handling is NOT implemented!
  *
@@ -51,7 +51,7 @@ static void str_to_uint16(char* p_str, uint8_t length, uint16_t* p_nr) {
     *p_nr = result;
 }
 
-/*
+/**
  * Initialization of the HMI functions:
  *  - init numeric keyboard
  *  - init LCD
@@ -61,7 +61,7 @@ void hmi_init(void) {
     lcd_init();
 }
 
-/*
+/**
  * Let the user enter a 3-digit integer number.
  * The user enters a digit (0-9) and confirms the number with '#'.
  * A digit can be erased by pressing '*'.
@@ -72,7 +72,7 @@ void hmi_init(void) {
  *
  * @return number of digits (0-3)
  */
-uint8_t input_int(char* p_msg, uint16_t* p_int_nr) {
+uint8_t input_int(const char* p_msg, uint16_t* p_int_nr) {
     uint8_t length = 0;
     const uint8_t max_length = 3;
     char numbers[max_length + 1];  // UPPGIFT: Varför måste man dimensionera
@@ -84,17 +84,24 @@ uint8_t input_int(char* p_msg, uint16_t* p_int_nr) {
     lcd_set_cursor_mode(CURSOR_BLINK);
     lcd_set_cursor_pos(1, 0);
 
+    // uint8_t prev_key;
+
     while (1) {
         do {  // read keyboard....
+            // prev_key = key;
             key = numkey_read();
         } while (key == NO_KEY);  // ...until a key is pressed!
+
+        // if (prev_key == key) continue;
 
         if (key == '#') {  // confirmation of the number?
             break;
         } else if (key == '*') {  // erase digit?
             if (length > 0) {
-                // UPPGIFT: skriv kod så att tecknet suddas från displayen!
                 length--;
+                lcd_set_cursor_pos(1, length);
+                lcd_write(DATA, ' ');
+                lcd_set_cursor_pos(1, length);
             }
         } else if (length < max_length) {  // enter digit?
             lcd_write(DATA, key);
@@ -102,10 +109,9 @@ uint8_t input_int(char* p_msg, uint16_t* p_int_nr) {
             length++;
         }
 
-        // continue when key is released!
-        // UPPGIFT: Skriv kod så att koden stannar/"loopar" tills att
-        // numkey_read() inte längre detekterar en knapptryckning!
+        while (key != NO_KEY) { key = numkey_read(); }
     };
+
     // terminate string
     numbers[length] = '\0';
 
@@ -114,11 +120,12 @@ uint8_t input_int(char* p_msg, uint16_t* p_int_nr) {
         // convert number!
         str_to_uint16(numbers, length, p_int_nr);
     }
+
     // return the number of digits
     return length;
 }
 
-/*
+/**
  * Show a message on the LCD (for a number of seconds).
  * The first string is written on the first row,
  * the second string is written on the second row.

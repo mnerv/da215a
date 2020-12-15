@@ -1,4 +1,4 @@
-﻿/*
+﻿/**
  * lcd.h
  *
  * This file contains subroutines for communicating with a Hitachi HD44780
@@ -14,7 +14,7 @@
 
 #include <inttypes.h>
 
-/*
+/**
  * To be used with lcd_write()
  */
 enum lcd_register {
@@ -22,7 +22,7 @@ enum lcd_register {
     DATA          // to write data (characters) to the Data Register
 };
 
-/*
+/**
  * To be used with lcd_set_cursor_mode()
  */
 enum lcd_cursor {
@@ -32,10 +32,10 @@ enum lcd_cursor {
 };
 
 void lcd_init(void);
-void lcd_write(enum lcd_register, uint8_t);
-void lcd_write_str(const char*);
+void lcd_write(enum lcd_register lcd_reg, uint8_t data);
+void lcd_write_str(const char *p_str);
 void lcd_clear(void);
-void lcd_set_cursor_mode(enum lcd_cursor);
-void lcd_set_cursor_pos(uint8_t, uint8_t);
+void lcd_set_cursor_mode(enum lcd_cursor mode);
+void lcd_set_cursor_pos(uint8_t row, uint8_t col);
 
 #endif /* LCD_H_ */

@@ -9,7 +9,7 @@ USBPORT += $(shell ls /dev/tty.usbmodem*)
 # For Linux only
 # USBPORT+=$(shell ls /dev/ttyACM*)
 
-all: main.hex
+all: main.hex size
 
 rebuild: clean all
 
@@ -49,11 +49,14 @@ delay_asm.o: ./src/delay/delay_asm.S ./src/delay/delay.h
 
 # Upload to the board
 install: main.hex
-	avrdude -v -p atmega32u4 -c avr109 -P ${USBPORT} -b 115200 -D -U flash:w:./main.hex:i
+	avrdude -v -p atmega32u4 -c avr109 -P ${USBPORT} -b 115200 -D -U flash:w:$<:i
+
+force_install:
+	avrdude -v -p atmega32u4 -c avr109 -P ${USBPORT} -b 115200 -D -U flash:w:main.hex:i
 
 # Get program size
 size: main.elf
-	@avr-size --mcu=$(MCU) -C $<
+	@avr-size --format=avr --mcu=$(MCU) -C $<
 
 clean:
 	rm -f *.hex *.o *.elf *.lst
