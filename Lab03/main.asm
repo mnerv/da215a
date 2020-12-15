@@ -19,13 +19,13 @@
   .EQU CURSOR_ROW0 = 0x80
   .EQU CURSOR_ROW1 = 0xC0
 
-  .DEF TEMP      = R16     ; Temporary value
-  .DEF RVAL      = R24     ; Return value
+  .DEF TEMP      = R16    ; Temporary value
+  .DEF RVAL      = R24    ; Return value
 
-  .EQU ROLL_KEY = '2'
-  .EQU SHOW_STAT_KEY = '3'
-  .EQU CLEAR_STAT_KEY = '8'
-  .EQU MONITOR_KEY = '9'
+  .EQU ROLL_KEY       = 0x04      ; '2' on the keypad
+  .EQU SHOW_STAT_KEY  = 0x08      ; '3' on the keypad
+  .EQU CLEAR_STAT_KEY = 0x06      ; '8' on the keypad
+  .EQU MONITOR_KEY    = 0x0A      ; '9' on the keypad
 
 ; ---------------------------------------------------------------------
 ; Start of program
@@ -43,9 +43,6 @@
   .INCLUDE "stats.inc"
   .INCLUDE "dice.inc"
   .INCLUDE "stat_data.inc"
-
-hello_str:
-  .DB "Hello!",0
 
 ; ---------------------------------------------------------------------
 ; Initializations of stack pointer, I/O pins
@@ -90,31 +87,22 @@ init_pins:
   RET
 
 ; ---------------------------------------------------------------------
-; Draw the currently pressed key on the LCD
-; Paramter:
-;          R24: Key value
-;          R24 > 0
-; ---------------------------------------------------------------------
-
-; ---------------------------------------------------------------------
 ; Main loop
 ; ---------------------------------------------------------------------
 main:
-  ; Read key and convert to ASCII
-  ; MOV PREV_KEY, RVAL
   RCALL read_keyboard
 
   CPI RVAL, NO_KEY
   BRNE select_mode
 
 draw_press_2:
-  ; CP RVAL, PREV_KEY
-  ; BREQ select_mode
   RCALL print_press_2
 
+; ---------------------------------------------------------------------
+; Select mode
+; Determine which mode to use
+; ---------------------------------------------------------------------
 select_mode:
-  RCALL to_ASCII
-
   CPI RVAL, ROLL_KEY
   BREQ call_roll_dice
 
@@ -129,6 +117,10 @@ select_mode:
 
   RJMP main
 
+; -----------------------------------------------------------------------------
+; Call roll_dice subroutine
+; Print rolling... and storing value in the memory
+; -----------------------------------------------------------------------------
 call_roll_dice:
   RCALL lcd_clear_display
   SET_CURSOR 0x80
@@ -137,12 +129,14 @@ call_roll_dice:
   RCALL roll_dice
 
   MOV R24, R16
+  PUSH R16
   RCALL store_stat
 
   RCALL lcd_clear_display
   SET_CURSOR 0x80
   PRINTSTRING value_str
 
+  POP R16
   MOV R24, R16
   RCALL printhex
 
@@ -152,16 +146,25 @@ call_roll_dice:
 
   RJMP main
 
+; -----------------------------------------------------------------------------
+; Call the showstat subroutine
+; -----------------------------------------------------------------------------
 call_showstat:
   RCALL showstat
   RJMP main
 
+; -----------------------------------------------------------------------------
+; Call the clearstat subroutine
+; -----------------------------------------------------------------------------
 call_clearstat:
   RCALL clearstat
 
   RCALL delay_1_s
   RJMP main
 
+; -----------------------------------------------------------------------------
+; Call the monitor subroutine
+; -----------------------------------------------------------------------------
 call_monitor:
   RCALL monitor
   RJMP main
