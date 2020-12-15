@@ -11,6 +11,8 @@
 #include "guess_nr.h"
 #include "hmi/hmi.h"
 #include <stdio.h>
+#include "lcd/lcd.h"
+#include "delay/delay.h"
 
 static uint16_t get_nr(void);
 static uint8_t playing_game(uint16_t, uint16_t*);
@@ -27,9 +29,8 @@ static uint16_t get_nr(void) {
     uint16_t input_length;
     uint16_t guessed_nr;
     while (1) {
-        input_length = 0;  // UPPGIFT: ändra koden så att 'input_int()' anropas,
-                           // returvärdet ska lagras i 'input_length',
-                           // 'guessed_nr' ska modifieras av 'input_int()'.
+        input_length = input_int("Enter a number:", &guessed_nr);
+
         // if the user entered a number, and if it was between 1 and 100...
         if (input_length > 0 && guessed_nr >= 1 && guessed_nr <= 100) {
             // ...return that number!
@@ -55,8 +56,9 @@ static uint8_t playing_game(uint16_t rnd_nr, uint16_t* p_nr_of_guesses) {
 
     // let the user guess a number
     guessed_nr = get_nr();
+
     // keep track of number of guesses
-    // UPPGIFT: öka innehållet i variabeln som 'p_nr_of_guesses' pekar på.
+    (*p_nr_of_guesses)++;
 
     // if the guessed number was the correct number...
     if (guessed_nr == rnd_nr) {
