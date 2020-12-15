@@ -20,13 +20,13 @@ main.hex: main.elf
 	avr-objcopy -O ihex -j .text -j .data $< $@
 
 # Linking
-main.elf: main.o numkey.o lcd.o hmi.o delay_asm.o
+main.elf: main.o numkey.o lcd.o hmi.o delay_asm.o temp.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 # ---------------------------------------------------------------- 
 # Compile to object file no link
 # ---------------------------------------------------------------- 
-main.o: ./src/main.c
+main.o: ./src/main.c ./src/common.h
 	$(CC) $(CFLAGS) -c ./src/main.c -o $@
 
 numkey.o: ./src/numkey/numkey.c ./src/numkey/numkey.h
@@ -40,6 +40,9 @@ hmi.o: ./src/hmi/hmi.c ./src/hmi/hmi.h
 
 delay_asm.o: ./src/delay/delay_asm.S ./src/delay/delay.h
 	$(CC) $(CFLAGS) -c ./src/delay/delay_asm.S
+
+temp.o: ./src/temp/temp.c ./src/temp/temp.h
+	$(CC) $(CFLAGS) -c $<
 
 # Upload to the board
 install: main.hex

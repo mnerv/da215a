@@ -133,6 +133,7 @@ uint8_t input_int(const char* p_msg, uint16_t* p_int_nr) {
  * @param p_str1: pointer to first character of the string.
  * @param p_ptr2: pointer to first character of the string.
  * @param delay_after_msg: number of seconds to wait after message is shown.
+ * This delay only works if it's bigger than 1.
  */
 void output_msg(const char* p_str1, const char* p_str2,
                 uint8_t delay_after_msg) {
@@ -141,5 +142,6 @@ void output_msg(const char* p_str1, const char* p_str2,
     lcd_write_str(p_str1);
     lcd_set_cursor_pos(1, 0);
     lcd_write_str(p_str2);
-    delay_s(delay_after_msg);
+
+    if (delay_after_msg > 0) delay_s(delay_after_msg);
 }
