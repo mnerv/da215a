@@ -3,11 +3,14 @@ CC = avr-gcc
 MCU = atmega32u4
 CFLAGS = -Wall -g -Os -mmcu=$(MCU) -I./src
 
-# For macOS
-USBPORT += $(shell ls /dev/tty.usbmodem*)
-
-# For Linux only
-# USBPORT+=$(shell ls /dev/ttyACM*)
+# Get OS, only for macOS and Linux
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	USBPORT+=$(shell ls /dev/ttyACM*)
+endif
+ifeq ($(UNAME_S),Darwin)
+	USBPORT+=$(shell ls /dev/tty.usbmodem*)
+endif
 
 all: main.hex size
 
