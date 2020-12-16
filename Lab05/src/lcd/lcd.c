@@ -4,8 +4,7 @@
  * This file contains subroutines for communicating with a Hitachi HD44780
  * LCD controller (or compatible circuit).
  *
- * Author:  Mathias Beckius
- *          Pratchaya Khansomboon
+ * Author:  Mathias Beckius, Pratchaya Khansomboon
  *
  * Date:    2014-11-28
  */

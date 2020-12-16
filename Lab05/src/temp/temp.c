@@ -3,7 +3,7 @@
  *
  * This is the device driver for the LM35 temperature sensor.
  *
- * Author:  Mathias Beckius
+ * Author:  Mathias Beckius, Pratchaya Khansomboon
  *
  * Date:    2014-12-07
  */
@@ -24,9 +24,6 @@ static volatile uint16_t adc = 221;
  */
 ISR(ADC_vect) {
     // read ADC value
-    // UPPGIFT: Läs in ADC-värdet. Börja med att läsa av det "låga" registret,
-    // därefter det "höga" registret!
-    // adc = (ADCH << 8) | ADCL;
     uint8_t low = ADCL;
     uint8_t high = ADCH;
 

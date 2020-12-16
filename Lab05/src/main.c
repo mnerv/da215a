@@ -1,6 +1,13 @@
 /**
+ * main.c
+ *
+ * Measure the temperature and display it on the LCD
+ *
  * Author: Pratchaya Khansomboon, Ademir Zjajo
+ *
+ * Created: 15-12-2020
  */
+
 #include <avr/io.h>
 #include <stdio.h>
 
@@ -18,8 +25,6 @@ int main() {
 
     hmi_init();
     temp_init();
-
-    output_msg("Hello there", "", 0);
 
     while (1) {
         prev_key = key;
@@ -46,14 +51,13 @@ int main() {
                 sprintf(temp_str, "%u%cC", temp_read_celsius(), 0xDF);
                 break;
             case SHOW_TEMP_F:
-                sprintf(temp_str, "%u%cF", temp_read_celsius(), 0xDF);
+                sprintf(temp_str, "%u%cF", temp_read_fahrenheit(), 0xDF);
                 break;
             case SHOW_TEMP_CF:
-                sprintf(temp_str, "%u%cCF", temp_read_celsius(), 0xDF);
+                sprintf(temp_str, "%u%cC, %u%cF", temp_read_celsius(), 0xDF,
+                        temp_read_fahrenheit(), 0xDF);
                 break;
         }
-
-        // if (prev_key == key) continue;
 
         output_msg("Temp", &temp_str, 0);
     }
