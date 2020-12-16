@@ -44,6 +44,6 @@
  * @param bit_data data value
  */
 #define SET_BIT_LEVELS(reg, bit_mask, bit_data) \
-    (reg) = (reg & bit_mask) | bit_data
+    (reg) = (((reg) & (bit_mask)) | ((bit_data) & ~(bit_mask)))
 
 #endif /* COMMON_H_ */

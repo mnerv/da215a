@@ -44,8 +44,8 @@ void temp_init(void) {
     ADMUX |= ((0 << REFS1) | (1 << REFS0));  // set reference voltage (internal
                                              // 5V)
 
-    ADMUX |= 0b00001001;  // select diff.amp 10x on ADC0 & ADC1
-                          // right adjustment of ADC value
+    ADMUX |= 0b01001;  // select diff.amp 10x on ADC0 & ADC1
+                       // right adjustment of ADC value
 
     ADCSRA |= 0b00000111;    // prescaler 128
     ADCSRA |= (1 << ADATE);  // enable Auto Trigger
@@ -53,7 +53,7 @@ void temp_init(void) {
     ADCSRA |= (1 << ADEN);   // enable ADC
 
     // disable digital input on ADC0 and ADC1
-    DIDR0 = 0b11;
+    DIDR0 = 3;
 
     // disable USB controller (to make interrupts possible)
     USBCON = 0;
