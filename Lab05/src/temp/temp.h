@@ -3,9 +3,9 @@
  *
  * This is the device driver for the LM35 temperature sensor.
  *
- * Author:	Mathias Beckius
+ * Author:  Mathias Beckius
  *
- * Date:	2014-12-07
+ * Date:    2014-12-07
  */
 
 #ifndef TEMP_H_
@@ -19,7 +19,7 @@
 enum state { SHOW_TEMP_C, SHOW_TEMP_F, SHOW_TEMP_CF };
 
 /**
- * Data type for state enumeration for temperature units
+ * Data type for state enumeration for temperature units.
  */
 typedef enum state state_t;
 

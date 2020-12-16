@@ -38,6 +38,10 @@
  * SET_BIT_LEVELS(PORTD, 0b00001111, 0b10100000);
  *
  * The bit mask is used to clear the bits that should be modified.
+ *
+ * @param reg target register
+ * @param bit_mask masked for the target register
+ * @param bit_data data value
  */
 #define SET_BIT_LEVELS(reg, bit_mask, bit_data) \
     (reg) = (reg & bit_mask) | bit_data

@@ -16,10 +16,13 @@ int main() {
     char prev_key;
     char key;
 
+    temp_init();
     hmi_init();
 
+    output_msg("Hello there", "", 0);
+
     while (1) {
-        prev_key = key;
+        // prev_key = key;
         key = numkey_read();
 
         if (prev_key == key) continue;
