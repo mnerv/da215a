@@ -40,6 +40,6 @@
  * The bit mask is used to clear the bits that should be modified.
  */
 #define SET_BIT_LEVELS(reg, bit_mask, bit_data) \
-    (reg) = (reg & bit_mask) | bit_data
+    (reg) = (reg & bit_mask) | (bit_data & ~bit_mask)
 
 #endif /* COMMON_H_ */
