@@ -34,12 +34,8 @@ ISR(ADC_vect) {
  * Initialize the ADC and ISR.
  */
 void temp_init(void) {
-    // UPPGIFT: konfigurera ADC-enheten genom ställa in ADMUX och ADCSRA enligt
-    // kommentarerna nedanför!
-    ADMUX = 0;
-
-    ADMUX |= ((0 << REFS1) | (1 << REFS0));  // set reference voltage (internal
-                                             // 5V)
+    ADMUX |= ((0 << REFS1) | (1 << REFS0));  // set reference voltage
+                                             // (internal 5V)
 
     ADMUX |= 0b01001;  // select diff.amp 10x on ADC0 & ADC1
                        // right adjustment of ADC value
@@ -59,12 +55,11 @@ void temp_init(void) {
     sei();
 
     // start initial conversion
-    ADCSRA |= (1 << ADSC);  // UPPGIFT: gör så att den initiala A/D-omvandlingen
-                            // sker
+    ADCSRA |= (1 << ADSC);
 }
 
 /*
- * Returns the temperature in Celsius.
+ * @return The temperature in Celcius
  */
 uint8_t temp_read_celsius(void) {
     uint16_t adc_correction = adc * 98;
@@ -75,7 +70,7 @@ uint8_t temp_read_celsius(void) {
 }
 
 /*
- * Returns the temperature in Fahrenheit.
+ * @return The temperature in Fahrenheit.
  */
 uint8_t temp_read_fahrenheit(void) {
     uint16_t convert = ((temp_read_celsius() * 90) / 5) + 320;
