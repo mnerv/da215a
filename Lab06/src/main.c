@@ -12,6 +12,7 @@
 #include "hmi/hmi.h"
 #include "regulator/regulator.h"
 #include "delay/delay.h"
+#include "motor/motor.h"
 
 int main() {
     // TODO: Sate machine, MOTOR_OFF, MOTOR_ON, MOTOR_RUNNING
@@ -20,6 +21,7 @@ int main() {
 
     hmi_init();
     regulator_init();
+    motor_init();
 
     char buffer[16];
 
@@ -37,6 +39,8 @@ int main() {
             output_msg("Value:", &buffer, 0);
             delay_ms(100);
         }
+
+        motor_set_speed(cur_reg);
 
         // if (prev_key != key) {
         //     switch (key) {

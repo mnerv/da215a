@@ -16,4 +16,11 @@
  */
 void motor_init();
 
+/**
+ * Set the motor speed
+ *
+ * @param[in] value 0 to 100
+ */
+void motor_set_speed(uint8_t value);
+
 #endif

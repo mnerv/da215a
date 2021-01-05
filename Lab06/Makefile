@@ -21,7 +21,7 @@ main.hex: main.elf
 	avr-objcopy -O ihex -j .text -j .data $< $@
 
 # Linking
-main.elf: main.o numkey.o lcd.o hmi.o delay_asm.o regulator.o
+main.elf: main.o numkey.o lcd.o hmi.o delay_asm.o regulator.o motor.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 # ---------------------------------------------------------------- 
@@ -43,6 +43,9 @@ delay_asm.o: ./src/delay/delay_asm.S ./src/delay/delay.h
 	$(CC) $(CFLAGS) -c ./src/delay/delay_asm.S
 
 regulator.o: ./src/regulator/regulator.c ./src/regulator/regulator.h
+	$(CC) $(CFLAGS) -c $<
+
+motor.o: ./src/motor/motor.c ./src/motor/motor.h
 	$(CC) $(CFLAGS) -c $<
 
 # Upload to the board
