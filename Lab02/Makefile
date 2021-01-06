@@ -5,8 +5,14 @@ all: main.hex
 # Clean and assemble
 rebuild: clean all
 
-# For macOS
-USBPORT+=$(shell ls /dev/tty.usbmodem*)
+# Get OS, only for macOS and Linux
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	USBPORT+=$(shell ls /dev/ttyACM*)
+endif
+ifeq ($(UNAME_S),Darwin)
+	USBPORT+=$(shell ls /dev/tty.usbmodem*)
+endif
 
 # Assemble the code
 main.hex: main.asm delay.inc lcd.inc

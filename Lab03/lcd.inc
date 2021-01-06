@@ -62,7 +62,6 @@ str_1:
   RCALL write_string
 .ENDMACRO
 
-
 ; -----------------------------------------------------------------------------
 ; Write the most significant nibble (of the content in R24) to the LCD.
 ; -----------------------------------------------------------------------------
@@ -106,7 +105,6 @@ lcd_write_chr:
 ; Register used:
 ;                R24
 ; -----------------------------------------------------------------------------
-
 lcd_clear_display:
   LDI R24, 0x01
   RCALL lcd_write_instr
@@ -119,7 +117,6 @@ lcd_clear_display:
 ; Register used:
 ;                R24
 ; -----------------------------------------------------------------------------
-
 cursor_no_blink:
   LDI R24, 0x0E
   RCALL lcd_write_instr
@@ -132,7 +129,6 @@ cursor_no_blink:
 ; Register used:
 ;                R24
 ; -----------------------------------------------------------------------------
-
 cursor_off:
   LDI R24, 0x0C 
   RCALL lcd_write_instr

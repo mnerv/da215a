@@ -1,7 +1,8 @@
 # compiler options
 CC = avr-gcc
 MCU = atmega32u4
-CFLAGS = -Wall -g -Os -mmcu=$(MCU) -I./src
+STD = c11
+CFLAGS = -std=$(STD) -Wall -g -Os -mmcu=$(MCU) -I./src
 
 # Get OS, only for macOS and Linux
 UNAME_S := $(shell uname -s)
@@ -20,20 +21,14 @@ main.hex: main.elf
 	avr-objcopy -O ihex -j .text -j .data $< $@
 
 # Linking
-main.elf: main.o guess_nr.o random.o numkey.o lcd.o hmi.o delay_asm.o
+main.elf: main.o numkey.o lcd.o hmi.o delay_asm.o temp.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 # ---------------------------------------------------------------- 
 # Compile to object file no link
 # ---------------------------------------------------------------- 
 main.o: ./src/main.c ./src/common.h
-	$(CC) $(CFLAGS) -c ./src/main.c
-
-guess_nr.o: ./src/guess_nr.c ./src/guess_nr.h
-	$(CC) $(CFLAGS) -c ./src/guess_nr.c
-
-random.o: ./src/random/random.c ./src/random/random.h
-	$(CC) $(CFLAGS) -c ./src/random/random.c
+	$(CC) $(CFLAGS) -c ./src/main.c -o $@
 
 numkey.o: ./src/numkey/numkey.c ./src/numkey/numkey.h
 	$(CC) $(CFLAGS) -c ./src/numkey/numkey.c
@@ -44,11 +39,11 @@ lcd.o: ./src/lcd/lcd.c ./src/lcd/lcd.h
 hmi.o: ./src/hmi/hmi.c ./src/hmi/hmi.h
 	$(CC) $(CFLAGS) -c ./src/hmi/hmi.c
 
-# delay.o: ./src/delay/delay.c ./src/delay/delay.h
-# 	$(CC) $(CFLAGS) -c ./src/delay/delay.c
-
 delay_asm.o: ./src/delay/delay_asm.S ./src/delay/delay.h
 	$(CC) $(CFLAGS) -c ./src/delay/delay_asm.S
+
+temp.o: ./src/temp/temp.c ./src/temp/temp.h
+	$(CC) $(CFLAGS) -c $<
 
 # Upload to the board
 install: main.hex

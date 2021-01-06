@@ -51,9 +51,9 @@ store_stat:
 ; Get stat
 ;
 ; Parameter IN:
-;               R24 number index
+;           R24 number index
 ;
-; Return: R24 value fron the data memory
+; Return:   R24 value fron the data memory
 ; ---------------------------------------------------------------------
 get_stat:
   RCALL get_stat_pointer_x
@@ -68,24 +68,18 @@ clear_stat:
   RCALL get_stat_pointer_x
 
   LDI R24, 0x00     ; Roll count
-  ST X, R24
+  ST X+, R24
 
-  INC XL
-  ST X, R24         ; One count
+  ST X+, R24        ; One count
 
-  INC XL
-  ST X, R24         ; Two count
+  ST X+, R24        ; Two count
 
-  INC XL
-  ST X, R24         ; Three count
+  ST X+, R24        ; Three count
 
-  INC XL
-  ST X, R24         ; Four count
+  ST X+, R24        ; Four count
 
-  INC XL
-  ST X, R24         ; Five count
+  ST X+, R24        ; Five count
 
-  INC XL
   ST X, R24         ; Six count
 
   RET
