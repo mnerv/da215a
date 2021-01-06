@@ -37,10 +37,11 @@ void temp_init(void) {
     ADMUX |= ((0 << REFS1) | (1 << REFS0));  // set reference voltage
                                              // (internal 5V)
 
-    ADMUX |= 0b01001;  // select diff.amp 10x on ADC0 & ADC1
-                       // right adjustment of ADC value
+    ADMUX |= (0 << MUX4) | (1 << MUX3) | (0 << MUX2) | (0 << MUX1) |
+             (1 << MUX0);  // select diff.amp 10x on ADC0 & ADC1
+                           // right adjustment of ADC value
 
-    ADCSRA |= 0b00000111;    // prescaler 128
+    ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);  // prescaler 128
     ADCSRA |= (1 << ADATE);  // enable Auto Trigger
     ADCSRA |= (1 << ADIE);   // enable Interrupt
     ADCSRA |= (1 << ADEN);   // enable ADC
