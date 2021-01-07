@@ -3,7 +3,7 @@
  *
  * Read the potentiometer using ADC
  *
- * Created: 05-01-2021
+ * Created: 2021-01-05
  */
 
 #ifndef REGULATOR_H_

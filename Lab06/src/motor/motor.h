@@ -3,7 +3,7 @@
  *
  * Control the motor speed using PWM
  *
- * Created: 05-01-2021
+ * Created: 2021-01-05
  */
 #ifndef MOTOR_H_
 #define MOTOR_H_
@@ -19,8 +19,8 @@ void motor_init();
 /**
  * Set the motor speed
  *
- * @param[in] value 0 to 100
+ * @param[in] duty Expects 0 to 100
  */
-void motor_set_speed(uint8_t value);
+void motor_set_speed(uint8_t duty);
 
 #endif

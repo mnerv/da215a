@@ -1,7 +1,7 @@
 ﻿/**
  * regulator.c
  *
- * Created: 05-01-2021
+ * Created: 2021-01-05
  */
 
 #include <avr/io.h>
