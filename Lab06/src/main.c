@@ -28,11 +28,10 @@ int main() {
 
     char prev_key;
     char key;
-    uint8_t prev_reg, cur_reg;
+    uint8_t cur_reg;
 
     while (1) {
         prev_key = key;
-        prev_reg = cur_reg;
         key = numkey_read();
         cur_reg = read_regulator();
 
@@ -66,5 +65,6 @@ int main() {
         output_msg(&buffer1, &buffer2, 0);
         delay_ms(100);
     }
+
     return 0;
 }
