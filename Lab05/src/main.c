@@ -30,7 +30,9 @@ int main() {
         prev_key = key;
         key = numkey_read();
 
+        // Check if there's a button click
         if (prev_key != key) {
+            // Switch to the state that's mapped to buttons 1, 2, and 3
             switch (key) {
                 case '1':
                     next_state = SHOW_TEMP_C;
@@ -47,6 +49,7 @@ int main() {
         // Update the state
         current_state = next_state;
 
+        // Format ouput text depending on what state it is in
         switch (current_state) {
             case SHOW_TEMP_C:
                 sprintf(temp_str, "%u%cC", temp_read_celsius(), 0xDF);
