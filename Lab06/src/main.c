@@ -35,6 +35,7 @@ int main() {
         key = numkey_read();
         cur_reg = read_regulator();
 
+        // Check for button clicked
         if (prev_key != key) {
             if (key == '2' && cur_reg == 0) {
                 state = MOTOR_ON;
@@ -45,14 +46,14 @@ int main() {
             }
         }
 
-        if (state == MOTOR_ON && cur_reg > 0) state = MOTOR_RUNNING;
-
+        // Determine what state we are in
         switch (state) {
             case MOTOR_OFF:
                 sprintf(buffer1, "Motor off");
                 motor_set_speed(0);
                 break;
             case MOTOR_ON:
+                if (cur_reg > 0) state = MOTOR_RUNNING;
                 sprintf(buffer1, "Motor on");
                 break;
             case MOTOR_RUNNING:
@@ -63,7 +64,9 @@ int main() {
 
         sprintf(buffer2, "%u", cur_reg);
         output_msg(&buffer1, &buffer2, 0);
-        delay_ms(100);
+
+        // Wait for the screen
+        // delay_ms(100);
     }
 
     return 0;
