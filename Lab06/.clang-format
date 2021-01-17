@@ -1,0 +1,14 @@
+BasedOnStyle: Google 
+IndentWidth: 4
+TabWidth: 4
+ContinuationIndentWidth: 4
+Language: Cpp
+SortIncludes: false 
+CompactNamespaces: true
+NamespaceIndentation: All
+AllowAllConstructorInitializersOnNextLine: true
+AlignTrailingComments: true
+AllowAllArgumentsOnNextLine: true
+DerivePointerAlignment: false
+PointerAlignment: Left
+SpaceBeforeInheritanceColon: true
