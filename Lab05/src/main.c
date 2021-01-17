@@ -44,7 +44,8 @@ int main() {
             }
         }
 
-        if (current_state != next_state) current_state = next_state;
+        // Update the state
+        current_state = next_state;
 
         switch (current_state) {
             case SHOW_TEMP_C:
