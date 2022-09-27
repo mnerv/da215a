@@ -11,4 +11,4 @@ Lab04 to Lab06 is written in C mixed with assembly.
   - avr-gcc
   - avrdude
 
-To compile/assemble the code you'll need these software installed on your system. Check my [Embedded System](https://github.com/KTheXIII/embedded_system) repo for more info.
+To compile/assemble the code you'll need these software installed on your system. Check my [Embedded System](https://github.com/mnerv/embedded_system_notes) repo for more info.
